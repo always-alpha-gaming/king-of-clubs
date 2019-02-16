@@ -1,0 +1,26 @@
+{
+  "name": "config",
+  "version": "0.0.0",
+  "description": "config",
+  "author": "Patrick Gingras <775.pg.12@gmail.com>",
+  "homepage": "https://github.com/always-alpha-gaming/king-of-clubs/tree/master/packages/config#readme",
+  "license": "ISC",
+  "main": "config.json",
+  "directories": {
+    "lib": "lib",
+    "test": "__tests__"
+  },
+  "files": [
+    "lib"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/always-alpha-gaming/king-of-clubs.git"
+  },
+  "scripts": {
+    "test": "echo \"Error: run tests from root\" && exit 1"
+  },
+  "bugs": {
+    "url": "https://github.com/always-alpha-gaming/king-of-clubs/issues"
+  }
+}

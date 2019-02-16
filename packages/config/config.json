@@ -1,0 +1,8 @@
+{
+  "TEAMS": [
+    { "name": "Green", "colour": "green" },
+    { "name": "Blue", "colour": "blue" }
+  ],
+  "CHUNK_SIZE": 32,
+  "BLOCK_SIZE": 1
+}

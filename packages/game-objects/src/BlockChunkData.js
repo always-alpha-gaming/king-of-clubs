@@ -1,8 +1,8 @@
 class BlockChunkData {
-    constructor(id, position, blocks) {
-      this.id = id;
-      this.position = position;
-      this.blocks = blocks;
+    constructor({id, blocks, position}) {
+        this.id = id;
+        this.blocks = blocks;
+        this.position = position;
     }
   
     update() {}

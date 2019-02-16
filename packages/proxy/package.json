@@ -18,6 +18,7 @@
     "url": "git+https://github.com/always-alpha-gaming/king-of-clubs.git"
   },
   "scripts": {
+    "start": "node .",
     "test": "echo \"Error: run tests from root\" && exit 1"
   },
   "bugs": {

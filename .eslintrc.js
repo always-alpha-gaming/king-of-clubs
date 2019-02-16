@@ -13,7 +13,6 @@ module.exports = {
   },
   rules: {
     'strict': ['error', 'global'],
-    'arrow-parens': ['error', 'always'],
     'no-param-reassign': 'off',
     'no-restricted-syntax': 'off',
     'import/no-dynamic-require': 'off',

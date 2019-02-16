@@ -1,19 +1,17 @@
-
-'use strict';
-
 module.exports = {
-  extends: 'airbnb',
-  parser: 'babel-eslint',
-  overrides: [
-    {
-      files: ['*.js'],
-      parserOptions: { sourceType: 'script' },
-    },
-    {
-      files: ['*.mjs'],
-      parserOptions: { sourceType: 'module' },
-    },
-  ],
+  env: {
+    browser: true,
+    es6: true,
+    node: true,
+  },
+  extends: 'airbnb-base',
+  globals: {
+    Atomics: 'readonly',
+    SharedArrayBuffer: 'readonly',
+  },
+  parserOptions: {
+    ecmaVersion: 2018,
+  },
   rules: {
     'strict': ['error', 'global'],
     'arrow-parens': ['error', 'always'],

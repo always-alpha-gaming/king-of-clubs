@@ -1,0 +1,22 @@
+{
+  "name": "king-of-clubs",
+  "version": "1.0.0",
+  "description": "Ace of spades ripoff in the browser with VR support",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/always-alpha-gaming/king-of-clubs.git"
+  },
+  "author": "macdja38",
+  "license": "UNLICENCED",
+  "bugs": {
+    "url": "https://github.com/always-alpha-gaming/king-of-clubs/issues"
+  },
+  "homepage": "https://github.com/always-alpha-gaming/king-of-clubs#readme",
+  "dependencies": {
+    "lerna": "^3.13.0"
+  }
+}

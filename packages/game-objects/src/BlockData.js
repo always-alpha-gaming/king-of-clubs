@@ -1,3 +1,5 @@
+const CONFIG = require('config');
+
 class BlockData {
   /**
    * Block Data Constructor 
@@ -7,11 +9,15 @@ class BlockData {
    * @param {Number} param0.health The Health of this block
    * @param {Object} param0.blockType The Block Type of this Block
    */
-  constructor({ id, position, color = null, health = 3, blockType = 'AIR' }) {
+  constructor({ id, position, color = null, health, blockType = 0 }) {
+    if (typeof health !== 'number') {
+      this.health = CONFIG.BLOCK_TYPES[blockType].health
+    } else {
+      this.health = health;
+    }
     this.id = id;
     this.position = position;
     this.color = color;
-    this.health = health;
     this.blockType = blockType;
   }
 

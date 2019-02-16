@@ -22,5 +22,8 @@
   },
   "bugs": {
     "url": "https://github.com/always-alpha-gaming/king-of-clubs/issues"
+  },
+  "dependencies": {
+    "config": "^0.0.0"
   }
 }

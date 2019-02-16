@@ -18,9 +18,16 @@
     "url": "git+https://github.com/always-alpha-gaming/king-of-clubs.git"
   },
   "scripts": {
+    "build": "parcel build src/index.html",
+    "dev": "parcel src/index.html",
     "test": "echo \"Error: run tests from root\" && exit 1"
   },
   "bugs": {
     "url": "https://github.com/always-alpha-gaming/king-of-clubs/issues"
+  },
+  "dependencies": {
+    "aframe": "^0.9.0",
+    "mainloop.js": "^1.0.4",
+    "parcel": "^1.11.0"
   }
 }

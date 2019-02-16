@@ -9,5 +9,9 @@
   "BLOCK_TYPES": [
     { "name": "Air", "health": -1, "passable": true },
     { "name": "Stone", "health": 3 ,"passable": false }
-  ]
+  ],
+  "EVENTS": {
+    "WORLD_CREATE": 1,
+    "CHUNK_CREATE": 2
+  }
 }

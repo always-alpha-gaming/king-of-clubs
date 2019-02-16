@@ -20,6 +20,7 @@
   "scripts": {
     "build": "parcel build src/index.html",
     "dev": "parcel src/index.html",
+    "serve": "serve --listen 3000",
     "test": "echo \"Error: run tests from root\" && exit 1"
   },
   "bugs": {
@@ -28,6 +29,7 @@
   "dependencies": {
     "aframe": "^0.9.0",
     "mainloop.js": "^1.0.4",
-    "parcel": "^1.11.0"
+    "parcel": "^1.11.0",
+    "serve": "^10.1.2"
   }
 }

@@ -25,6 +25,7 @@
   },
   "dependencies": {
     "config": "^0.0.0",
+    "game-objects": "^0.0.0",
     "networked-aframe": "^0.6.1",
     "simplex-noise": "^2.4.0",
     "socket.io": "^2.2.0"

@@ -4,5 +4,9 @@
     { "name": "Blue", "colour": "blue" }
   ],
   "CHUNK_SIZE": 32,
-  "BLOCK_SIZE": 1
+  "BLOCK_SIZE": 1,
+  "BLOCK_TYPES": [
+    { "name": "Air" },
+    { "name": "Stone" }
+  ]
 }

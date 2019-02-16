@@ -4,5 +4,6 @@
     { "name": "Blue", "colour": "blue" }
   ],
   "CHUNK_SIZE": 32,
+  "MAP_HEIGHT": 256,
   "BLOCK_SIZE": 1
 }

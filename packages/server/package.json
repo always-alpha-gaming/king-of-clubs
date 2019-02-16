@@ -5,9 +5,9 @@
   "author": "macdja38 <jakeincanada@icloud.com>",
   "homepage": "https://github.com/always-alpha-gaming/king-of-clubs/tree/master/packages/server#readme",
   "license": "UNLICENCED",
-  "main": "lib/server.js",
+  "main": "server/easyrtc-server.js",
   "directories": {
-    "lib": "lib",
+    "server": "server",
     "test": "__tests__"
   },
   "files": [
@@ -22,5 +22,8 @@
   },
   "bugs": {
     "url": "https://github.com/always-alpha-gaming/king-of-clubs/issues"
+  },
+  "dependencies": {
+    "networked-aframe": "^0.6.1"
   }
 }

@@ -7,7 +7,7 @@
   "MAP_HEIGHT": 256,
   "BLOCK_SIZE": 1,
   "BLOCK_TYPES": [
-    { "name": "Air" },
-    { "name": "Stone" }
+    { "name": "Air", "passable": true },
+    { "name": "Stone", "passable": false }
   ]
 }

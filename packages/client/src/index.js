@@ -1,6 +1,8 @@
 import MainLoop from 'mainloop.js';
 import 'aframe';
 
+const { degToRad } = THREE.Math;
+
 const $ = document.querySelector.bind(document);
 
 function newThing(type, props) {
@@ -23,9 +25,9 @@ $('a-scene').appendChild(box);
 function makeRotator(degrees) {
   return function rotate(delta) {
     const amount = degrees * delta * 0.05;
-    box.object3D.rotation.z += THREE.Math.degToRad(amount);
-    box.object3D.rotation.x += THREE.Math.degToRad(amount);
-    box.object3D.rotation.y += THREE.Math.degToRad(amount);
+    box.object3D.rotation.z += degToRad(amount);
+    box.object3D.rotation.x += degToRad(amount);
+    box.object3D.rotation.y += degToRad(amount);
   };
 }
 

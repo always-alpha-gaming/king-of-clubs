@@ -35,16 +35,14 @@ export default class Player extends PlayerData {
   update(delta, world) {
     const velocity = this.ref.getAttribute('velocity');
     let keyboardControls;
-    if(!keyboardControls){
-      keyboardControls = this.ref.components["keyboard-controls"];
+    if (!keyboardControls) {
+      keyboardControls = this.ref.components['keyboard-controls'];
     }
 
-    if(keyboardControls.isPressed("Space")){
-
-      if(velocity.y===0) {
-        velocity.y = .075;
+    if (keyboardControls.isPressed('Space')) {
+      if ( velocity.y === 0) {
+        velocity.y = 0.075;
       }
-
     }
     if (velocity === null || typeof velocity === 'string') {
       return;
@@ -59,7 +57,7 @@ export default class Player extends PlayerData {
     const { x, y, z } = this.ref.object3D.position;
     // collisions
     const floor = world.getBlock(Math.floor(x), Math.floor(y) - 1, Math.floor(z));
-    if ((floor !== undefined && floor !== null &velocity.y<=0) || y <= 0) {
+    if ((floor !== undefined && floor !== null && velocity.y <= 0) || y <= 0) {
       velocity.y = 0;
     }
     if (velocity.x > 0) {

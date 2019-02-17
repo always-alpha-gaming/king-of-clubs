@@ -29,7 +29,7 @@ module.exports = function genChunk(x, z, seed = 'seed') {
         blocks[relativeX][absoluteY][relativeZ] = new BlockData({
           id: `${absoluteX}|${absoluteY}|${absoluteZ}`,
           position: [absoluteX, absoluteY, absoluteZ],
-          blockType: 1,
+          blockType: 2, // Stone
         });
       }
     }

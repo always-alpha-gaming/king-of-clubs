@@ -41,22 +41,32 @@ class GameState {
         // Broadcast their initial chunks
         this.map.blockChunks.forEach(row => {
             row.forEach(chunk => {
-                socket.emit('event', {t: CONFIG.EVENTS.CHUNK_CREATE, d: chunk})
+                socket.emit('event', {t: CONFIG.EVENTS.CHUNK_CREATE, d: chunk});
             })
         })
     }
 
     deregisterPlayer(socket) {
         // Go through all of the players...
+        let playerSocketPair = null;
         for(i = 0; i < this.players.length; i++) {
             // Find the connected Socket...
-            const player = this.players[i];
-            if (player.socket == socket) {
+            playerSocketPair = this.players[i];
+            if (playerSocketPair.socket == socket) {
                 // When found, remove it from the Players list
                 var i = this.players.indexOf(socket);
                 this.players.splice(i, 1);
+
+                // Break out of the loop
+                break;
             }
         }
+
+        // Loop through the remaining players and Notify that a player has left
+        if (playerSocketPair == null) return;
+        this.players.forEach(player => {
+            player.socket.emit('event', {t: CONFIG.EVENTS.PLAYER_LEAVE_RANGE, d: player.PlayerData});
+        })
     }
 }
 

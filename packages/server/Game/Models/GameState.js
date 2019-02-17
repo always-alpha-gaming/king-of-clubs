@@ -51,6 +51,15 @@ class GameState {
     }
     return null;
   }
+  getSocketPlayerPairFromPlayerID(playerID) {
+    for (let i = 0; i < this.players.length; i++) {
+      const pair = this.players[i];
+      if (pair.playerData.id === playerID) {
+        return pair;
+      }
+    }
+    return null;
+  }
 
   registerPlayer(clientManager, socket) {
     const startingPosition = { x: 20, y: 50, z: 20 };
@@ -100,10 +109,25 @@ class GameState {
     console.log(data);
   }
 
-  recievedPlayerShoot(socket, data) {
+  recievedPlayerShoot(clientManager, socket, data) {
     const playerSocketPair = this.getSocketPlayerPairFromSocket(socket);
     if (playerSocketPair == null) return;
-    // TODO: Shooting
+    
+    // Get the Target ID
+    var targetID = data.targetID;
+    const targetSocketPair = this.getSocketPlayerPairFromPlayerID(targetID);
+    if (targetSocketPair == null) return;
+
+    targetSocketPair.playerData.health--;
+
+    // If the target player is dead...
+    if (targetSocketPair.playerData.health <= 0) {
+      // Reset their spawn and rotation
+      targetSocketPair.playerData.position = { x: 20, y: 50, z: 20 };
+      targetSocketPair.playerData.rotation = { x: 0, y: 0, z: 0 };
+      targetSocketPair.playerData.health = -999;
+      clientManager.broadcastMessage(CONFIG.EVENTS.PLAYER_LEAVE_RANGE, targetSocketPair.playerData);
+    }
     console.log(data);
   }
 }

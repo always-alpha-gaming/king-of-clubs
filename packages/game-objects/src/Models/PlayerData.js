@@ -4,7 +4,7 @@ class PlayerData {
   /**
    * Player Data Constructor
    * @param {Object} param0 Configuration object containing the following...
-   * @param {String} param0.id The Globally Unique ID of the Player
+   * @param {Number} param0.id The Globally Unique ID of the Player
    * @param {Vector3} param0.position The Absolute Postion of the Player
    * @param {Vector3} param0.rotation The Absolute Postion of the Player
    * @param {Object} param0.teamIndex The Team CONFIG Index of this Team

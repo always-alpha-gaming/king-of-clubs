@@ -29,12 +29,22 @@ function update(deltaTime) {
 
   // Now that we are updating on a fixed interval, begin the Server-Side GameLoop
   const allPlayerData = gameState.getAllPlayerData();
-  const tickData = {
-    players: allPlayerData
-  };
   
+  // Check if any players are dead... 
+  allPlayerData.forEach((player) => {
+    // If players are dead...
+    if (player.health == -999) {
+      // Reset the Health and broadcast they are alive
+      player.health = CONFIG.PLAYER.MAX_HEALTH;
+      clientManager.broadcastMessage(CONFIG.EVENTS.PLAYER_ENTER_RANGE, player);
+    }
+  })
+
   // Tick out the Global Game State
-  clientManager.broadcastMessage(CONFIG.EVENTS.WORLD_TICK, tickData);
+    const worldTickData = {
+      players: allPlayerData
+    };
+  clientManager.broadcastMessage(CONFIG.EVENTS.WORLD_TICK, worldTickData);
 };
 
 module.exports = beginMainLoop;

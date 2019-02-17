@@ -24,7 +24,7 @@ class ClientManager {
 
   onPlayerShoot(socket, data) {
     this.printConsoleLog(socket, "has recieved a Player Shoot Event");
-    gameState.recievedPlayerShoot(socket, data);
+    gameState.recievedPlayerShoot(this, socket, data);
   }
 
   printConsoleLog(socket, message) {

@@ -46,13 +46,14 @@ class GameState {
         })
     }
 
-    deregisterPlayer(socket) {
+    deregisterPlayer(clientManager, socket) {
         // Go through all of the players...
-        let playerSocketPair = null;
+        let leavingPlayerSocketPair = null;
         for(i = 0; i < this.players.length; i++) {
             // Find the connected Socket...
-            playerSocketPair = this.players[i];
+            const playerSocketPair = this.players[i];
             if (playerSocketPair.socket == socket) {
+                leavingPlayerSocketPair = playerSocketPair;
                 // When found, remove it from the Players list
                 var i = this.players.indexOf(socket);
                 this.players.splice(i, 1);
@@ -63,10 +64,8 @@ class GameState {
         }
 
         // Loop through the remaining players and Notify that a player has left
-        if (playerSocketPair == null) return;
-        this.players.forEach(player => {
-            player.socket.emit('event', {t: CONFIG.EVENTS.PLAYER_LEAVE_RANGE, d: player.PlayerData});
-        })
+        if (leavingPlayerSocketPair == null) return;
+        clientManager.broadcastMessage(CONFIG.EVENTS.PLAYER_LEAVE_RANGE, leavingPlayerSocketPair.playerData);
     }
 }
 

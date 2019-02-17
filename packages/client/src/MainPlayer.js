@@ -11,7 +11,9 @@ export default class MainPlayer extends Player {
     }
     window.addEventListener('click', (evt) => {
       if (this.canShoot) {
-        console.log('i fired my gun at: ', evt.detail.intersection.point);
+        try {
+          console.log('i fired my gun at: ', evt.detail.intersection.point);
+        } catch (e) {}
         this.canShoot = false;
         setTimeout(() => {
           this.canShoot = true;

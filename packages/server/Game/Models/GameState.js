@@ -18,17 +18,18 @@ class GameState {
 
   getAllPlayerData() {
     const data = [];
-    this.players.forEach(pair => {
+    this.players.forEach((pair) => {
       data.push(pair.playerData);
     })
     return data;
   }
+
   getAllPlayerDataExcept(playerData) {
     const data = [];
-    this.players.forEach(pair => {
-      if (pair.playerData === playerData) continue;
+    this.players.forEach((pair) => {
+      if (pair.playerData === playerData) return;
       data.push(pair.playerData);
-    })
+    });
     return data;
   }
 
@@ -52,7 +53,7 @@ class GameState {
   }
 
   registerPlayer(clientManager, socket) {
-    const startingPosition = { x: 0, y: 0, z: 0 };
+    const startingPosition = { x: 20, y: 50, z: 20 };
     const startingRotation = { x: 0, y: 0, z: 0 };
     const teamIndex = 0;
 

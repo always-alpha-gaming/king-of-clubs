@@ -1,4 +1,5 @@
 const MainLoop = require('mainloop.js');
+const gameState = require('./Models/GameState');
 
 /**
  * Begins the MainLoop

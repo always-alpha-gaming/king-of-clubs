@@ -1,5 +1,5 @@
 const { MapData } = require('game-objects');
-const genChunk = require('./genChunk');
+const genChunk = require('../Services/genChunk');
 
 module.exports = class ServerMapData extends MapData {
   getOrGenChunk(x, z) {

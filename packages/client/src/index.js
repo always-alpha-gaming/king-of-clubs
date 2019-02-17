@@ -16,9 +16,13 @@ async function go() {
   const scene = $('a-scene');
   const playerElement = $('#player');
 
+
   // Set the Skybox Color to the CONST
-  const skybox = $('a-sky');
-  skybox.setAttribute('color', SKYBOX_COLOR);
+  // const skybox = $('a-sky');
+  // skybox.color = SKYBOX_COLOR;
+
+  const body = $('body');
+  body.style.backgroundColor = SKYBOX_COLOR;
 
   // Start the Connection
   const connection = await connect(

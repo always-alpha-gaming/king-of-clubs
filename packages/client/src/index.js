@@ -1,5 +1,6 @@
 import MainLoop from 'mainloop.js';
 import { registerComponent } from 'aframe';
+import { PlayerData } from 'game-objects';
 import 'aframe-extras';
 import './Chunk';
 
@@ -30,7 +31,7 @@ async function go() {
   const connection = await connect(
     `${window.location}`.includes('localhost') ? 'http://localhost:3000' : '/',
   );
-  const { borderZ, me } = await waitFor(connection.socket, EVENTS.WORLD_CREATE.toString());
+  const { borderZ, me } = await waitFor(connection.socket, EVENTS.WORLD_CREATE);
   const world = new World(borderZ);
 
   const player = new Player(me);
@@ -52,7 +53,7 @@ async function go() {
     if (currentTimeStep >= FIXED_TIME_STEP) {
       currentTimeStep -= FIXED_TIME_STEP;
       connection.socket.emit(EVENTS.CLIENT_TICK, {
-        me: player,
+        me: new PlayerData(player),
       });
     }
 

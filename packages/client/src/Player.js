@@ -36,8 +36,12 @@ export default class Player extends PlayerData {
 
   draw(scene) {
     if (!this.ref) {
-      this.ref = createElement('a-sphere', {
+      this.ref = createElement('a-box', {
         color: this.team.color,
+        position: this.position,
+        width: PLAYER.BASE_SIZE,
+        depth: PLAYER.BASE_SIZE,
+        height: PLAYER.HEIGHT,
       });
       scene.appendChild(this.ref);
       // this.ref.setAttribute('velocity', new Vector3());
@@ -45,8 +49,8 @@ export default class Player extends PlayerData {
   }
 
   unmount() {
-    if (this.ref) {
-      this.ref.remove();
+    if (this.ref && this.ref.object3D) {
+      this.ref.parentEl.remove(this.ref);
     }
   }
 }

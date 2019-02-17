@@ -6,7 +6,6 @@ export class SocketWrapper extends EventEmitter {
     super();
     this.socket = socket;
     socket.on('event', ({ t, d }) => {
-      console.log(d, t);
       this.emit(t.toString(), d);
     });
   }
@@ -16,10 +15,8 @@ export function connect(url, options) {
   return new Promise((resolve, reject) => {
     const socket = io(url, options);
     socket.on('connect', () => resolve(new SocketWrapper(socket)));
-    socket.on('connect', () => console.log('test'));
     socket.on('connect_error', reject);
     socket.on('connect_timeout', reject);
-    socket.on('event', console.log);
     socket.on('error', reject);
   });
 }

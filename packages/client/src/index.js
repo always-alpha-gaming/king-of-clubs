@@ -32,26 +32,10 @@ async function go() {
   // world instance, contains all chunks and blocks
   const world = new World();
   // all players within range, indexed by ID
-  const players = {};
+  const players = [];
 
   // listen for events from the server
   connection.on(EVENTS.CHUNK_CREATE, chunk => world.addChunk(chunk));
-  connection.on(EVENTS.PLAYER_ENTER_RANGE, (player) => {
-    players[player.id] = new Player(player);
-  });
-  connection.on(EVENTS.PLAYER_LEAVE_RANGE, ({ id }) => {
-    players[id].unmount();
-    delete players[id];
-  });
-  connection.on(EVENTS.WORLD_TICK, ({ players: newPlayers }) => {
-    newPlayers.forEach((player) => {
-      if (!players[player.id]) {
-        players[player.id] = new Player(player);
-      } else {
-        players[player.id] = Object.assign(players[player.id], player);
-      }
-    });
-  });
 
   // wait for world and player information
   // TODO: loading screen
@@ -64,6 +48,33 @@ async function go() {
   player.setColor();
   player.setDimensions();
   player.setCameraHeight();
+
+  connection.on(EVENTS.PLAYER_ENTER_RANGE, (newPlayer) => {
+    console.log(`entered range: ${newPlayer.id}`);
+    players.push(new Player(newPlayer));
+  });
+  connection.on(EVENTS.PLAYER_LEAVE_RANGE, ({ id }) => {
+    console.log(`left range: ${id}`);
+    const index = players.findIndex(({ id: pid }) => pid === id);
+    if (index !== -1) {
+      players[index].unmount();
+    }
+    delete players[index];
+  });
+  connection.on(EVENTS.WORLD_TICK, ({ players: newPlayers }) => {
+    // console.log('world tick', players);
+    newPlayers.forEach((newPlayer) => {
+      if (newPlayer.id === player.id) {
+        return;
+      }
+      const index = players.findIndex(p => p && p.id === newPlayer.id);
+      if (index === -1) {
+        players.push(new Player(newPlayer));
+      } else {
+        players[index] = Object.assign(players[index], newPlayer);
+      }
+    });
+  });
 
   // Game Loop Fixed TimeStep
   const FIXED_TIME_STEP = 100;

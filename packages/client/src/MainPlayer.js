@@ -85,9 +85,10 @@ export default class MainPlayer extends Player {
       new Vector3(velocity.x * dt, velocity.y, velocity.z * dt),
     );
     const { position, rotation } = this.ref.object3D;
-    this.position = [position.x, position.y, position.z];
-    this.rotation = [rotation.x, rotation.y, rotation.z];
     velocity.x = 0;
     velocity.z = 0;
+
+    this.position = position;
+    this.rotation = rotation;
   }
 }

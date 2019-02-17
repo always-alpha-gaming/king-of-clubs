@@ -22,8 +22,6 @@ export default class World {
   }
 
   addChunk(chunk) {
-    console.log(chunk.blocks);
-
     const blocks = chunk.blocks
       .map(
         (i, x) => i
@@ -37,8 +35,6 @@ export default class World {
               }),
           ),
       );
-
-    console.log(blocks);
 
     this.map.addChunk(new Chunk({ ...chunk, blocks }));
   }

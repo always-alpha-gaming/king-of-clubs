@@ -19,8 +19,10 @@ export default class MainPlayer extends Player {
       if (this.canShoot) {
         try {
           console.log('Shooting at:', evt.detail.intersectedEl.dataset.userId);
-          this.socket.emit(EVENTS.PLAYER_SHOOT, {
-            targetID: evt.detail.intersectedEl.dataset.userId,
+          this.socket.emit('event', {
+            t: EVENTS.PLAYER_SHOOT, d: {
+              targetID: evt.detail.intersectedEl.dataset.userId,
+            },
           });
         } catch (e) {
           //

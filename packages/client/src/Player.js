@@ -32,7 +32,6 @@ export default class Player extends PlayerData {
     this.ref.setAttribute('velocity', new Vector3());
   }
 
-
   update(delta, world) {
     const velocity = this.ref.getAttribute('velocity');
     if (velocity === null || typeof velocity === 'string') {
@@ -103,6 +102,9 @@ export default class Player extends PlayerData {
     this.ref.object3D.position.add(
       new Vector3(velocity.x * dt, velocity.y, velocity.z * dt),
     );
+    const { position, rotation } = this.ref.object3D;
+    this.position = [position.x, position.y, position.z];
+    this.rotation = [rotation.x, rotation.y, rotation.z];
   }
 
   draw(scene) {

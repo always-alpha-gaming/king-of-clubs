@@ -16,8 +16,16 @@ class GameState {
     }
   }
 
+  getRandomInt(min, max) {
+    min = Math.ceil(min);
+    max = Math.floor(max);
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+  }
+
   getRandomPlayerPosition() {
-    const position = { x: 20, y: 50, z: 20 };
+    const randomX = this.getRandomInt(5, 64);
+    const randomZ = this.getRandomInt(5, 64);
+    const position = { x: randomX, y: 50, z: randomZ };
     return position;
   }
 
@@ -123,17 +131,20 @@ class GameState {
   }
 
   receivedPlayerShoot(clientManager, socket, data) {
-    console.log(data);
+    console.log('Data: ' + data);
 
     // Get the Socket of the Player
     const playerSocketPair = this.getSocketPlayerPairFromSocket(socket);
     if (playerSocketPair == null) return;
+    //console.log('Shooter ID: ' + playerSocketPair.playerData.id);
 
     // Get the Target ID
     var targetID = data.targetID;
     const targetSocketPair = this.getSocketPlayerPairFromPlayerID(targetID);
     if (targetSocketPair == null) return;
+    //console.log('Target ID: ' + targetSocketPair.playerData.id);
 
+    // Decrease the Health...
     targetSocketPair.playerData.health--;
 
     // If the target player is dead...

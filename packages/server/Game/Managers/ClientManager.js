@@ -8,34 +8,44 @@ class ClientManager {
   }
 
   onConnected(socket) {
-    this.printConsoleLog(socket, "has connected");
+    this.printConsoleLog(socket, 'has connected');
     this.registerClient(socket);
   }
 
   onDisconnect(socket) {
-    this.printConsoleLog(socket, "has disconnected");
+    this.printConsoleLog(socket, 'has disconnected');
     this.deregisterClient(socket);
   }
 
   onClientTick(socket, data) {
-    this.printConsoleLog(socket, "has recieved Client Tick Event");
-    gameState.recievedClientTick(socket, data);
+    this.printConsoleLog(socket, 'has received Client Tick Event');
+    gameState.receivedClientTick(socket, data);
   }
 
   onPlayerShoot(socket, data) {
-    this.printConsoleLog(socket, "has recieved a Player Shoot Event");
-    gameState.recievedPlayerShoot(this, socket, data);
+    this.printConsoleLog(socket, 'has received a Player Shoot Event');
+    gameState.receivedPlayerShoot(this, socket, data);
+  }
+
+  onBlockPlace(socket, data) {
+    this.printConsoleLog(socket, 'has received a Block Place Event');
+    gameState.receivedBlockPlace(socket, data);
+  }
+
+  onBlockDelete(socket, data) {
+    this.printConsoleLog(socket, 'has received a Block Delete Event');
+    gameState.receivedBlockDelete(socket, data);
   }
 
   printConsoleLog(socket, message) {
     const address = socket.handshake.address; // address.address + ':' + address.port
     // var clientIPAddress = socket.request.connection.remoteAddress;
-    console.log(`Client (${address}) ` +  message);
+    console.log(`Client (${address}) ${message}`);
   }
 
   /**
    * Registers the Socket with the Client Manager and the GameState
-   * @param {*} socket 
+   * @param {*} socket
    */
   registerClient(socket) {
     this.clients.push(socket);
@@ -44,7 +54,7 @@ class ClientManager {
 
   /**
    * Deregisters the socket with the Client Manager and the GameState
-   * @param {*} socket 
+   * @param {*} socket
    */
   deregisterClient(socket) {
     const i = this.clients.indexOf(socket);
@@ -63,7 +73,7 @@ class ClientManager {
     });
   }
 
-   /**
+  /**
    * Broadcasts a message to the specified client
    * @param {*} socket The socket we will send the data to
    * @param {Number} type An Event Type from the Consts

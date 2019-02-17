@@ -42,6 +42,7 @@ class GameState {
     }
     return null;
   }
+
   getSocketPlayerPairFromPlayerData(playerData) {
     for (let i = 0; i < this.players.length; i++) {
       const pair = this.players[i];
@@ -51,6 +52,7 @@ class GameState {
     }
     return null;
   }
+
   getSocketPlayerPairFromPlayerID(playerID) {
     for (let i = 0; i < this.players.length; i++) {
       const pair = this.players[i];
@@ -102,7 +104,7 @@ class GameState {
     clientManager.broadcastMessage(CONFIG.EVENTS.PLAYER_LEAVE_RANGE, leavingPlayerSocketPair.playerData);
   }
 
-  recievedClientTick(socket, data) {
+  receivedClientTick(socket, data) {
     const playerSocketPair = this.getSocketPlayerPairFromSocket(socket);
     if (playerSocketPair == null) return;
     if (playerSocketPair.playerData.health <= 0) return; // Ignore ticks from dead players
@@ -110,10 +112,10 @@ class GameState {
     console.log(data);
   }
 
-  recievedPlayerShoot(clientManager, socket, data) {
+  receivedPlayerShoot(clientManager, socket, data) {
     const playerSocketPair = this.getSocketPlayerPairFromSocket(socket);
     if (playerSocketPair == null) return;
-    
+
     // Get the Target ID
     var targetID = data.targetID;
     const targetSocketPair = this.getSocketPlayerPairFromPlayerID(targetID);
@@ -130,6 +132,22 @@ class GameState {
       clientManager.broadcastMessage(CONFIG.EVENTS.PLAYER_LEAVE_RANGE, targetSocketPair.playerData);
     }
     console.log(data);
+  }
+
+  receivedBlockPlace(socket, data) {
+    const playerSocketPair = this.getSocketPlayerPairFromSocket(socket);
+    if (playerSocketPair == null) return;
+    const [x, y, z] = data.position;
+    const chunk = this.map.getChunkContainingAbsolute(x, z);
+    chunk.setBlock(x, y, z, new BlockData({ id: `${x}|${y}|${z}`, position: [x, y, z], blockType: 2 }));
+  }
+
+  receivedBlockDelete(socket, data) {
+    const playerSocketPair = this.getSocketPlayerPairFromSocket(socket);
+    if (playerSocketPair == null) return;
+    const [x, y, z] = data.position;
+    const chunk = this.map.getChunkContainingAbsolute(x, z);
+    chunk.setBlock(x, y, z, null);
   }
 }
 

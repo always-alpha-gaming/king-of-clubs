@@ -15,7 +15,7 @@ export default class Chunk extends BlockChunkData {
       // console.log(block.position);
 
       const renderTop = this.isBlockTransparent(x, y + 1, z);
-      const renderBottom = (y !== 0 && this.isBlockTransparent(x, y - 1, z));
+      const renderBottom = this.isBlockTransparent(x, y - 1, z);
       const renderLeft = this.isBlockTransparent(x + 1, y, z);
       const renderRight = this.isBlockTransparent(x - 1, y, z);
       const renderFront = this.isBlockTransparent(x, y, z - 1);

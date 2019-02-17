@@ -41,7 +41,7 @@ export default class Chunk extends BlockChunkData {
     const geometry = THREE.BufferGeometryUtils.mergeBufferGeometries(geometries);
     geometry.computeBoundingSphere();
 
-    const material = new THREE.MeshBasicMaterial({
+    const material = new THREE.MeshLambertMaterial({
       color: 'purple',
     });
 

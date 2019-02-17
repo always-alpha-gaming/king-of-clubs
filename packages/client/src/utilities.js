@@ -7,7 +7,7 @@ class SocketWrapper extends EventEmitter {
     this.socket = socket;
     socket.on('event', ({ t, d }) => {
       console.log(d, t);
-      this.emit(t.toString(), d)
+      this.emit(t.toString(), d);
     });
   }
 }

@@ -4,6 +4,7 @@
     { "name": "Blue", "colour": "blue" }
   ],
   "CHUNK_SIZE": 32,
+  "GROUND_HEIGHT": 3,
   "MAP_HEIGHT": 256,
   "SKYBOX_COLOUR": "cornflowerblue",
   "BLOCK_SIZE": 1,

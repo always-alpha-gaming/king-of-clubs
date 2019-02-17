@@ -7,10 +7,10 @@ import World from './World';
 
 async function go() {
   const scene = $('a-scene');
-  
+
   // Set the Skybox Color to the CONST
   const skybox = $('a-sky');
-  skybox.color = SKYBOX_COLOUR;
+  skybox.setAttribute('color', SKYBOX_COLOUR);
 
   // Start the Connection
   const connection = await connect(

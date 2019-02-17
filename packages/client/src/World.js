@@ -34,7 +34,10 @@ export default class World {
     chunk.blocks.forEach(
       y => y.forEach(
         z => z.forEach(
-          block => this.addBlock(block))));
+          block => this.addBlock(block),
+        ),
+      ),
+    );
   }
 
   getBlock(x, y, z) {
@@ -51,7 +54,10 @@ export default class World {
     this.blocks.forEach(
       y => y.forEach(
         z => z.forEach(
-          block => fn(block))));
+          block => fn(block),
+        ),
+      ),
+    );
   }
 
   update(delta) {
@@ -59,6 +65,21 @@ export default class World {
   }
 
   draw(scene) {
-    this.forEachBlock(block => block.draw(scene));
+    this.forEachBlock((block) => {
+      // check in all dimensions if there is null
+      const [x, y, z] = block.position;
+
+      // ok
+      if (
+        !this.getBlock(x - 1, y, z)
+        || !this.getBlock(x + 1, y, z)
+        || (y !== 0 && !this.getBlock(x, y - 1, z))
+        || !this.getBlock(x, y + 1, z)
+        || !this.getBlock(x, y, z - 1)
+        || !this.getBlock(x, y, z + 1)
+      ) {
+        block.draw(scene);
+      }
+    });
   }
 }

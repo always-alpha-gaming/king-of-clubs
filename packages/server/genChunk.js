@@ -1,7 +1,6 @@
 const CONFIG = require('config');
 const SimplexNoise = require('simplex-noise');
 const { BlockData, BlockChunkData } = require('game-objects');
-const baseHeight = 64;
 
 /**
  * Takes a chunk coordinate and generates a chunk, (chunk coordinates are not absolute coordinates)
@@ -23,7 +22,10 @@ module.exports = function genChunk(x, z, seed = 'seed') {
     const absoluteX = (x * CONFIG.CHUNK_SIZE) + relativeX;
     for (let relativeZ = 0; relativeZ < CONFIG.CHUNK_SIZE; relativeZ++) {
       const absoluteZ = (z * CONFIG.CHUNK_SIZE) + relativeZ;
-      const height = baseHeight + (10 * simplex.noise2D(0.2 * absoluteX, 0.2 * absoluteZ));
+      const height = Math.max(
+        0,
+        CONFIG.GROUND_HEIGHT + (5 * simplex.noise2D(0.02 * absoluteX, 0.02 * absoluteZ,
+        )));
 
       for (let absoluteY = 0; absoluteY < height; absoluteY++) {
         blocks[relativeX][absoluteY][relativeZ] = new BlockData({
@@ -34,6 +36,6 @@ module.exports = function genChunk(x, z, seed = 'seed') {
       }
     }
   }
-  
-  return new BlockChunkData({id: `${x}|${z}`, blocks, position: [x, z]})
+
+  return new BlockChunkData({ id: `${x}|${z}`, blocks, position: [x, z] })
 };

@@ -9,6 +9,8 @@ io.on('connection', client => {
 
   map.getOrGenChunk(0, 0);
   map.getOrGenChunk(1, 1);
+  map.getOrGenChunk(0, 1);
+  map.getOrGenChunk(1, 0);
   map.blockChunks.forEach(row => {
     row.forEach(chunk => {
       client.emit('event', {t: EVENTS.CHUNK_CREATE, d: chunk})

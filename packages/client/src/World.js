@@ -44,8 +44,7 @@ export default class World {
   }
 
   getBlock(x, y, z) {
-    const chunkX = Math.floor(x / CONFIG.CHUNK_SIZE);
-    const chunkZ = Math.floor(z / CONFIG.CHUNK_SIZE);
+    const { chunkX, chunkZ } = MapData.getChunkCoordinatesFromAbsolute(x, z);
 
     if (!this.map.blockChunks[chunkX]) {
       return undefined;

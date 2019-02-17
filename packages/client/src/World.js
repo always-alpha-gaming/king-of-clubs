@@ -1,3 +1,4 @@
+import CONFIG from 'config';
 import { MapData } from 'game-objects';
 import Block from './Block';
 import Chunk from './Chunk';
@@ -40,6 +41,19 @@ export default class World {
     console.log(blocks);
 
     this.map.addChunk(new Chunk({ ...chunk, blocks }));
+  }
+
+  getBlock(x, y, z) {
+    const chunkX = Math.floor(x / CONFIG.CHUNK_SIZE);
+    const chunkZ = Math.floor(z / CONFIG.CHUNK_SIZE);
+
+    if (!this.map.blockChunks[chunkX]) {
+      return undefined;
+    }
+    if (!this.map.blockChunks[chunkX][chunkZ]) {
+      return undefined;
+    }
+    return this.map.blockChunks[chunkX][chunkZ].getBlock(x, y, z);
   }
 
   update(delta) {

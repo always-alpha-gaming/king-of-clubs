@@ -29,12 +29,12 @@ class ClientManager {
 
   onBlockPlace(socket, data) {
     this.printConsoleLog(socket, 'has received a Block Place Event');
-    gameState.receivedBlockPlace(socket, data);
+    gameState.receivedBlockPlace(this, socket, data);
   }
 
   onBlockDelete(socket, data) {
     this.printConsoleLog(socket, 'has received a Block Delete Event');
-    gameState.receivedBlockDelete(socket, data);
+    gameState.receivedBlockDelete(this, socket, data);
   }
 
   onFellOffWorld(socket, data) {

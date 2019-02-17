@@ -47,6 +47,7 @@ export default class Player extends PlayerData {
         depth: PLAYER.BASE_SIZE,
         height: PLAYER.HEIGHT,
       });
+      this.ref.dataset.userId = this.id;
       scene.appendChild(this.ref);
       // this.ref.setAttribute('velocity', new Vector3());
     }

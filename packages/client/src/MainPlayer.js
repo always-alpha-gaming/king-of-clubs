@@ -1,9 +1,13 @@
-import { WORLD_GRAVITY } from 'config';
+import { WORLD_GRAVITY, EVENTS } from 'config';
 import Player from './Player';
 
 const { Vector3 } = THREE;
 
 export default class MainPlayer extends Player {
+  constructor({ socket, ...rest }) {
+    super(rest);
+    this.socket = socket;
+  }
 
   reload() {
     if (!this.canShoot) {
@@ -12,7 +16,9 @@ export default class MainPlayer extends Player {
     window.addEventListener('click', (evt) => {
       if (this.canShoot) {
         try {
-          console.log('i fired my gun at: ', evt.detail.intersection.point);
+        this.socket.emit(EVENTS.PLAYER_SHOOT, {
+          targetID: evt.detail.intersectedEl.dataset.userId,
+        });
         } catch (e) {}
         this.canShoot = false;
         setTimeout(() => {

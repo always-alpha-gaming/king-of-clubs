@@ -1,7 +1,7 @@
 {
   "TEAMS": [
-    { "name": "Green", "colour": "green" },
-    { "name": "Blue", "colour": "blue" }
+    { "id": 0, "name": "Green", "colour": "green" },
+    { "id": 1, "name": "Blue", "colour": "blue" }
   ],
   "CHUNK_SIZE": 32,
   "GROUND_HEIGHT": 3,

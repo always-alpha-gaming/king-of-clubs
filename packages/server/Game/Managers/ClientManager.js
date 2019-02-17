@@ -8,15 +8,17 @@ class ClientManager {
     }
 
     onConnected(socket) {
-        var address = socket.handshake.address;
-        console.log('Client ('+address.address + ':' + address.port+') has connected');
+        var address = socket.handshake.address; // address.address + ':' + address.port
+        // var clientIPAddress = socket.request.connection.remoteAddress;
+        console.log('Client ('+address+') has connected');
 
         // Register the Client with the ClientManager
         this.registerClient(socket);
     }
     onDisconnect(socket) {
-        var address = socket.handshake.address;
-        console.log('Client ('+address.address + ':' + address.port+') has disconnected');
+        var address = socket.handshake.address; // address.address + ':' + address.port
+        // var clientIPAddress = socket.request.connection.remoteAddress;
+        console.log('Client ('+address+') has disconnected');
         
         // Register the Client with the ClientManager
         this.deregisterClient(socket);

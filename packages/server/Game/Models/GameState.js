@@ -51,7 +51,7 @@ class GameState {
     return null;
   }
 
-  registerPlayer(socket) {
+  registerPlayer(clientManager, socket) {
     const startingPosition = { x: 0, y: 0, z: 0 };
     const startingRotation = { x: 0, y: 0, z: 0 };
     const teamIndex = 0;
@@ -72,13 +72,16 @@ class GameState {
 
     // Broadcast the Initial GameState to this player
     const initialState = { map: this.map, me: newPlayer };
-    socket.emit('event', { t: CONFIG.EVENTS.WORLD_CREATE, d: initialState });
+    clientManager.broadcastMessageToSocket(socket, CONFIG.EVENTS.WORLD_CREATE, initialState);
 
     // Broadcast their initial chunks
     this.map.forEachChunk((chunk) => {
       console.log(`Sending chunk with pos ${chunk.position} to client`);
-      socket.emit('event', { t: CONFIG.EVENTS.CHUNK_CREATE, d: chunk });
+      clientManager.broadcastMessageToSocket(socket, CONFIG.EVENTS.CHUNK_CREATE, chunk);
     });
+
+    // Broadcast the player to all active players
+    clientManager.broadcastMessage(CONFIG.EVENTS.PLAYER_ENTER_RANGE, newPlayer);
   }
 
   deregisterPlayer(clientManager, socket) {

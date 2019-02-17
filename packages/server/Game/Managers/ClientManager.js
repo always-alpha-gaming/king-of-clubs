@@ -39,7 +39,7 @@ class ClientManager {
    */
   registerClient(socket) {
     this.clients.push(socket);
-    gameState.registerPlayer(socket);
+    gameState.registerPlayer(this, socket);
   }
 
   /**

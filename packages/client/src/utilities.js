@@ -12,9 +12,9 @@ class SocketWrapper extends EventEmitter {
   }
 }
 
-function connect(...stuff) {
+function connect(url, options) {
   return new Promise((resolve, reject) => {
-    const socket = io(...stuff);
+    const socket = io(url, options);
     socket.on('connect', () => resolve(new SocketWrapper(socket)));
     socket.on('connect', () => console.log('test'));
     socket.on('connect_error', reject);

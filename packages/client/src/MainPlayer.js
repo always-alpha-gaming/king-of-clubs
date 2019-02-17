@@ -1,5 +1,6 @@
-import { WORLD_GRAVITY, EVENTS } from 'config';
+import { WORLD_GRAVITY, EVENTS, PLAYER } from 'config';
 import Player from './Player';
+import { $ } from './utilities';
 
 const { Vector3 } = THREE;
 
@@ -7,6 +8,7 @@ export default class MainPlayer extends Player {
   constructor({ socket, ...rest }) {
     super(rest);
     this.socket = socket;
+    this.healthSpan = $('#health');
   }
 
   reload() {
@@ -34,6 +36,11 @@ export default class MainPlayer extends Player {
     if (!this.ref) {
       return;
     }
+
+    this.healthSpan.innerText = Array(PLAYER.MAX_HEALTH)
+      .fill('💖', 0, this.health)
+      .fill('🖤', this.health, PLAYER.MAX_HEALTH)
+      .join(' ');
 
     const velocity = this.ref.getAttribute('velocity');
     let keyboardControls;

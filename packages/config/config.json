@@ -23,7 +23,7 @@
     "PLAYER_SHOOT": 7
   },
   "PLAYER": {
-    "MAX_HEALTH": 100,
+    "MAX_HEALTH": 3,
     "SPRINT_MODIFIER": 1.25,
     "MOVEMENT_SPEED": 1,
     "JUMP_SPEED": 1,

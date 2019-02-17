@@ -51,21 +51,27 @@ async function go() {
   player.reload();
 
   connection.on(EVENTS.PLAYER_ENTER_RANGE, (newPlayer) => {
-    console.log(`entered range: ${newPlayer.id}`);
+    if (newPlayer.id !== player.id) {
+      const { health, position, rotation } = newPlayer;
+      player.health = health;
+      player.position = position;
+      player.rotation = rotation;
+      return;
+    }
     players.push(new Player(newPlayer));
   });
   connection.on(EVENTS.PLAYER_LEAVE_RANGE, ({ id }) => {
-    console.log(`left range: ${id}`);
-    const index = players.findIndex(({ id: pid }) => pid === id);
+    const index = players.findIndex(p => p && p.id === id);
     if (index !== -1) {
       players[index].unmount();
+      delete players[index];
     }
-    delete players[index];
   });
   connection.on(EVENTS.WORLD_TICK, ({ players: newPlayers }) => {
     // console.log('world tick', players);
     newPlayers.forEach((newPlayer) => {
       if (newPlayer.id === player.id) {
+        player.health = newPlayer.health;
         return;
       }
       const index = players.findIndex(p => p && p.id === newPlayer.id);

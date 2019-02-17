@@ -6,7 +6,7 @@ class MapData {
      * @param {String} param0.perlinSeed The Perlin Seed for this Map
      * @param {Number} param0.borderZ The Z Coordinate of the Border
      */
-    constructor({blockChunks, perlinSeed, borderZ}) {
+    constructor({blockChunks=[], perlinSeed='seed', borderZ=0}) {
       this.blockChunks = blockChunks;
       this.perlinSeed = perlinSeed;
       this.borderZ = borderZ;
@@ -16,4 +16,3 @@ class MapData {
   }
   
   module.exports = MapData;
-  

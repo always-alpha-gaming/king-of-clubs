@@ -43,7 +43,8 @@ export default class MainPlayer extends Player {
 
     const { rotation } = camera.object3D;
 
-    const direction = new THREE.Vector3(0, 0, -1).applyEuler(rotation).normalize();
+    const direction = new THREE.Vector3(0, 0, -1).applyEuler(rotation)
+      .normalize();
 
     const destination = world.raycast(position, direction, 5);
 
@@ -90,89 +91,106 @@ export default class MainPlayer extends Player {
       if (this.blockDeleteButton) {
         this.blockDelete(scene);
       }
-    }
 
-    if (keyboardControls.isPressed('Space')) {
-      if (velocity.y === 0) {
-        velocity.y = 0.075;
+      if (keyboardControls.isPressed('Space')) {
+        if (velocity.y === 0) {
+          velocity.y = 0.075;
+        }
       }
-    }
-    if (velocity === null || typeof velocity === 'string') {
-      return;
-    }
 
-    const dt = delta / 1000;
-
-    // apply gravity
-    const deltaV = WORLD_GRAVITY * dt;
-    velocity.y -= deltaV;
-    let collisionArray = [];
-    const { x, y, z } = this.ref.object3D.position;
-    // collisions
-    const floor = world.getBlock(Math.floor(x), Math.floor(y) - 1, Math.floor(z));
-    if (floor !== undefined && floor !== null && velocity.y <= 0) {
-      velocity.y = 0;
-    }
-    if (velocity.x > 0) {
-      collisionArray.push(world.getBlock(Math.floor(x) + 1, Math.floor(y), Math.round(z)));
-      collisionArray.push(world.getBlock(Math.floor(x) + 1, Math.floor(y) + 1, Math.round(z)));
-      collisionArray.push(world.getBlock(Math.floor(x) + 1, Math.floor(y) + 2, Math.round(z)));
-      const filteredCollisions = collisionArray.filter(element => element !== null);
-      if (filteredCollisions.length !== 0) {
-        velocity.x = 0;
-        collisionArray = [];
+      if (velocity === null || typeof velocity === 'string') {
+        return;
       }
-    }
 
-    if (velocity.x < 0) {
-      collisionArray.push(world.getBlock(Math.ceil(x) - 1, Math.floor(y), Math.round(z)));
-      collisionArray.push(world.getBlock(Math.ceil(x) - 1, Math.floor(y) + 1, Math.round(z)));
-      collisionArray.push(world.getBlock(Math.ceil(x) - 1, Math.floor(y) + 2, Math.round(z)));
-      const filteredCollisions = collisionArray.filter(element => element !== null);
-      if (filteredCollisions.length !== 0) {
-        velocity.x = 0;
-        collisionArray = [];
+      this.left = this.ref.querySelector('[vive-controls*="hand: left"]');
+      this.right = this.ref.querySelector('[vive-controls*="hand: right"]');
+
+
+      this.left.addEventListener('gripdown', () => {
+        if (velocity.y === 0) {
+          velocity.y = 0.075;
+        }
+      });
+
+      this.left.addEventListener('trackpadup', this.blockPlace(world, scene));
+
+      this.right.addEventListener('gripdown', () => {
+        window.click();
+      });
+
+      const dt = delta / 1000;
+
+      // apply gravity
+      const deltaV = WORLD_GRAVITY * dt;
+      velocity.y -= deltaV;
+      let collisionArray = [];
+      const { x, y, z } = this.ref.object3D.position;
+      // collisions
+      const floor = world.getBlock(Math.floor(x), Math.floor(y) - 1, Math.floor(z));
+      if (floor !== undefined && floor !== null && velocity.y <= 0) {
+        velocity.y = 0;
       }
-    }
-
-    if (velocity.z > 0) {
-      collisionArray.push(world.getBlock(Math.round(x), Math.floor(y), Math.floor(z) + 1));
-      collisionArray.push(world.getBlock(Math.round(x), Math.floor(y) + 1, Math.floor(z) + 1));
-      collisionArray.push(world.getBlock(Math.round(x), Math.floor(y) + 2, Math.floor(z) + 1));
-      const filteredCollisions = collisionArray.filter(element => element !== null);
-      if (filteredCollisions.length !== 0) {
-        velocity.z = 0;
-        collisionArray = [];
+      if (velocity.x > 0) {
+        collisionArray.push(world.getBlock(Math.floor(x) + 1, Math.floor(y), Math.round(z)));
+        collisionArray.push(world.getBlock(Math.floor(x) + 1, Math.floor(y) + 1, Math.round(z)));
+        collisionArray.push(world.getBlock(Math.floor(x) + 1, Math.floor(y) + 2, Math.round(z)));
+        const filteredCollisions = collisionArray.filter(element => element !== null);
+        if (filteredCollisions.length !== 0) {
+          velocity.x = 0;
+          collisionArray = [];
+        }
       }
-    }
 
-    if (velocity.z < 0) {
-      collisionArray.push(world.getBlock(Math.round(x), Math.floor(y), Math.ceil(z) - 1));
-      collisionArray.push(world.getBlock(Math.round(x), Math.floor(y) + 1, Math.ceil(z) - 1));
-      collisionArray.push(world.getBlock(Math.round(x), Math.floor(y) + 2, Math.ceil(z) - 1));
-      const filteredCollisions = collisionArray.filter(element => element !== null);
-      if (filteredCollisions.length !== 0) {
-        velocity.z = 0;
-        collisionArray = [];
+      if (velocity.x < 0) {
+        collisionArray.push(world.getBlock(Math.ceil(x) - 1, Math.floor(y), Math.round(z)));
+        collisionArray.push(world.getBlock(Math.ceil(x) - 1, Math.floor(y) + 1, Math.round(z)));
+        collisionArray.push(world.getBlock(Math.ceil(x) - 1, Math.floor(y) + 2, Math.round(z)));
+        const filteredCollisions = collisionArray.filter(element => element !== null);
+        if (filteredCollisions.length !== 0) {
+          velocity.x = 0;
+          collisionArray = [];
+        }
       }
-    }
 
-    // apply velocity
-    this.ref.object3D.position.add(
-      new Vector3(velocity.x * dt, velocity.y, velocity.z * dt),
-    );
-    const { position, rotation } = this.ref.object3D;
-    velocity.x = 0;
-    velocity.z = 0;
+      if (velocity.z > 0) {
+        collisionArray.push(world.getBlock(Math.round(x), Math.floor(y), Math.floor(z) + 1));
+        collisionArray.push(world.getBlock(Math.round(x), Math.floor(y) + 1, Math.floor(z) + 1));
+        collisionArray.push(world.getBlock(Math.round(x), Math.floor(y) + 2, Math.floor(z) + 1));
+        const filteredCollisions = collisionArray.filter(element => element !== null);
+        if (filteredCollisions.length !== 0) {
+          velocity.z = 0;
+          collisionArray = [];
+        }
+      }
 
-    this.position = position;
-    this.rotation = rotation;
+      if (velocity.z < 0) {
+        collisionArray.push(world.getBlock(Math.round(x), Math.floor(y), Math.ceil(z) - 1));
+        collisionArray.push(world.getBlock(Math.round(x), Math.floor(y) + 1, Math.ceil(z) - 1));
+        collisionArray.push(world.getBlock(Math.round(x), Math.floor(y) + 2, Math.ceil(z) - 1));
+        const filteredCollisions = collisionArray.filter(element => element !== null);
+        if (filteredCollisions.length !== 0) {
+          velocity.z = 0;
+          collisionArray = [];
+        }
+      }
 
-    if (!this.fellOffWorld && this.position.y <= -10) {
-      this.fellOffWorld = true;
-      this.socket.emit(EVENTS.FELL_OFF_WORLD, {});
-    } else if (this.fellOffWorld) {
-      this.fellOffWorld = false;
+      // apply velocity
+      this.ref.object3D.position.add(
+        new Vector3(velocity.x * dt, velocity.y, velocity.z * dt),
+      );
+      const { position, rotation } = this.ref.object3D;
+      velocity.x = 0;
+      velocity.z = 0;
+
+      this.position = position;
+      this.rotation = rotation;
+
+      if (!this.fellOffWorld && this.position.y <= -10) {
+        this.fellOffWorld = true;
+        this.socket.emit(EVENTS.FELL_OFF_WORLD, {});
+      } else if (this.fellOffWorld) {
+        this.fellOffWorld = false;
+      }
     }
   }
 }

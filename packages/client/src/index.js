@@ -56,7 +56,9 @@ async function go() {
       const { health, position, rotation } = newPlayer;
       console.log(player.position, position);
       player.health = health;
+      const { x, y, z } = position;
       player.position = position;
+      player.ref.object3D.position.set(x, y, z);
       player.rotation = rotation;
       return;
     }

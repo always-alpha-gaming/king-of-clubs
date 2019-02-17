@@ -1,3 +1,4 @@
+const CONFIG = require('config');
 const ServerMapData = require('./ServerMapData');
 const SocketPlayerPair = require('./SocketPlayerPair');
 const idManager = require('../Managers/IDManager');
@@ -34,12 +35,12 @@ class GameState {
 
         // Broadcast the Initial GameState to this player
         const initialState = {map: this.map, me: newPlayer};
-        socket.emit('event', {t: EVENTS.WORLD_CREATE, d: initialState});
+        socket.emit('event', {t: CONFIG.EVENTS.WORLD_CREATE, d: initialState});
 
         // Broadcast their initial chunks
         this.map.blockChunks.forEach(row => {
             row.forEach(chunk => {
-                socket.emit('event', {t: EVENTS.CHUNK_CREATE, d: chunk})
+                socket.emit('event', {t: CONFIG.EVENTS.CHUNK_CREATE, d: chunk})
             })
         })
     }

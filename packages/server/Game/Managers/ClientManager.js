@@ -1,5 +1,5 @@
 const io = require('socket.io')();
-const { EVENTS } = require('config');
+const CONFIG = require('config');
 const gameState = require('../Models/GameState');
 
 class ClientManager {

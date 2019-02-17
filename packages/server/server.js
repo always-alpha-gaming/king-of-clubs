@@ -1,7 +1,5 @@
-const { EVENTS } = require('config');
 const io = require('socket.io')();
 const clientManager = require('./Game/Managers/ClientManager');
-const gameState = require('./Game/Models/GameState')
 const gameLoop = require('./Game/gameLoop');
 
 // Begin Server Game Loop

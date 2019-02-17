@@ -37,5 +37,5 @@ module.exports = function genChunk(x, z, seed = 'seed') {
     }
   }
 
-  return new BlockChunkData({ id: `${x}|${z}`, blocks, position: [x, z] })
+  return new BlockChunkData({ id: `${x}|${z}`, blocks, position: [x, z] });
 };

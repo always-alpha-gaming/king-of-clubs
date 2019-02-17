@@ -9,11 +9,11 @@ class GameState {
     this.map = new ServerMapData({});
     this.players = [];
 
-    // Initialize the map with some chunks
-    this.map.getOrGenChunk(0, 0);
-    this.map.getOrGenChunk(1, 1);
-    this.map.getOrGenChunk(0, 1);
-    this.map.getOrGenChunk(1, 0);
+    for (let x = -2; x < 2; x += 1) {
+      for (let z = -2; z < 2; z += 1) {
+        this.map.getOrGenChunk(x, z);
+      }
+    }
   }
 
   registerPlayer(socket) {
@@ -40,10 +40,9 @@ class GameState {
     socket.emit('event', { t: CONFIG.EVENTS.WORLD_CREATE, d: initialState });
 
     // Broadcast their initial chunks
-    this.map.blockChunks.forEach((row) => {
-      row.forEach((chunk) => {
-        socket.emit('event', { t: CONFIG.EVENTS.CHUNK_CREATE, d: chunk });
-      });
+    this.map.forEachChunk((chunk) => {
+      console.log(`Sending chunk with pos ${chunk.position} to client`);
+      socket.emit('event', { t: CONFIG.EVENTS.CHUNK_CREATE, d: chunk });
     });
   }
 

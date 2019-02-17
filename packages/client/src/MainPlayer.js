@@ -36,17 +36,28 @@ export default class MainPlayer extends Player {
 
   }
 
-  blockPlace(scene) {
-    const { position, rotation } = this.ref.object3D;
+  blockPlace(world, scene) {
+    const camera = this.ref.querySelector('[camera]');
 
-    const raycaster = new THREE.Raycaster(position, rotation);
+    const { position } = this.ref.object3D;
 
-    const intersects = raycaster.intersectObjects(scene.children);
+    const { rotation } = camera.object3D;
 
-    console.log(intersects);
+    const direction = new THREE.Vector3(0, 0, -1).applyEuler(rotation).normalize();
+
+    const destination = world.raycast(position, direction, 5);
+
+    if (!destination) {
+      return;
+    }
+
+    this.socket.emit(EVENTS.BLOCK_PLACE, {
+      position: [destination.x, destination.y + 2, destination.z],
+    });
+
+    console.log(destination);
 
     console.log(position, rotation);
-
   }
 
   update(delta, world, scene) {
@@ -69,7 +80,7 @@ export default class MainPlayer extends Player {
       this.placeBlockButton = keyboardControls.isPressed('KeyE');
 
       if (this.placeBlockButton) {
-        this.blockPlace(scene);
+        this.blockPlace(world, scene);
       }
     }
 

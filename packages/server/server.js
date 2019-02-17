@@ -12,11 +12,7 @@ gameLoop();
 io.on('connection', client => {
   console.log('connection from client');
   client.emit('event', {t: EVENTS.WORLD_CREATE, d: gameState.map});
-
-  gameState.map.getOrGenChunk(0, 0);
-  gameState.map.getOrGenChunk(1, 1);
-  gameState.map.getOrGenChunk(0, 1);
-  gameState.map.getOrGenChunk(1, 0);
+  
   gameState.map.blockChunks.forEach(row => {
     row.forEach(chunk => {
       client.emit('event', {t: EVENTS.CHUNK_CREATE, d: chunk})

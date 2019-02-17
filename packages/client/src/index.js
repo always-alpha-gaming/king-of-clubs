@@ -1,34 +1,23 @@
 import MainLoop from 'mainloop.js';
 import 'aframe';
 
-const { degToRad } = THREE.Math;
+import { EVENTS } from 'config';
+import { $, connect, waitFor } from './utilities';
+import World from './World';
 
-const $ = document.querySelector.bind(document);
+const scene = $('a-scene');
+(async () => {
+  const connection = await connect('/socket');
+  const { borderZ } = await waitFor(EVENTS.WORLD_CREATE);
+  const world = new World(borderZ);
 
-function newThing(type, props) {
-  const thing = document.createElement(type);
-  Object.entries(props)
-    .forEach(([key, value]) => thing.setAttribute(key, value));
-  return thing;
-}
+  connection.on(EVENTS.CHUNK_CREATE, chunk => world.addChunk(chunk));
 
-
-const box = newThing('a-box', {
-  scale: '2 2 2',
-  rotation: '0 45 45',
-  position: '0 2 -5',
-  color: 'orange',
-});
-
-$('a-scene').appendChild(box);
-
-function makeRotator(degrees) {
-  return function rotate(delta) {
-    const amount = degrees * delta * 0.05;
-    box.object3D.rotation.z += degToRad(amount);
-    box.object3D.rotation.x += degToRad(amount);
-    box.object3D.rotation.y += degToRad(amount);
-  };
-}
-
-MainLoop.setUpdate(makeRotator(1)).start();
+  MainLoop.setUpdate((delta) => {
+    world.update(delta);
+  });
+  MainLoop.setDraw(() => {
+    world.draw(scene);
+  });
+  MainLoop.start();
+})();

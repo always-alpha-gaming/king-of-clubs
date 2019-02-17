@@ -5,6 +5,7 @@
   "author": "macdja38 <jakeincanada@icloud.com>",
   "homepage": "https://github.com/always-alpha-gaming/king-of-clubs/tree/master/packages/client#readme",
   "license": "UNLICENCED",
+  "browserslist": ["since 2017-06"],
   "main": "lib/client.js",
   "directories": {
     "lib": "lib",
@@ -28,8 +29,12 @@
   },
   "dependencies": {
     "aframe": "^0.9.0",
+    "config": "^0.0.0",
+    "eventemitter3": "^3.1.0",
+    "game-objects": "^0.0.0",
     "mainloop.js": "^1.0.4",
     "parcel": "^1.11.0",
-    "serve": "^10.1.2"
+    "serve": "^10.1.2",
+    "socket.io-client": "^2.2.0"
   }
 }

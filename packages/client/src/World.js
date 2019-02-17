@@ -1,4 +1,6 @@
-class World {
+import { createElement } from './utilities';
+
+export default class World {
   /**
    * @param {number} borderZ
    */
@@ -23,6 +25,14 @@ class World {
     this.block[x][y][z] = block;
   }
 
+  addChunk(chunk) {
+    chunk.blocks.forEach(
+      y => y.forEach(
+        block => this.addBlock(block),
+      ),
+    );
+  }
+
   getBlock(x, y, z) {
     if (!this.blocks[x]) {
       return undefined;
@@ -32,6 +42,20 @@ class World {
     }
     return this.blocks[x][y][z];
   }
-}
 
-module.exports = World;
+  forEachBlock(fn) {
+    this.blocks.forEach(
+      y => y.forEach(
+        block => fn(block),
+      ),
+    );
+  }
+
+  update(delta) {
+    this.forEachBlock(block => block.update(delta));
+  }
+
+  draw(scene) {
+    this.forEachBlock(block => block.draw(scene));
+  }
+}

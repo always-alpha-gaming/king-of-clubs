@@ -32,7 +32,11 @@ export default class Player extends PlayerData {
     this.ref.setAttribute('velocity', new Vector3());
   }
 
-  update() {}
+  update() {
+    if (this.ref) {
+      this.ref.setAttribute('position', this.position);
+    }
+  }
 
   draw(scene) {
     if (!this.ref) {
@@ -43,6 +47,7 @@ export default class Player extends PlayerData {
         depth: PLAYER.BASE_SIZE,
         height: PLAYER.HEIGHT,
       });
+      this.ref.dataset.userId = this.id;
       scene.appendChild(this.ref);
       // this.ref.setAttribute('velocity', new Vector3());
     }

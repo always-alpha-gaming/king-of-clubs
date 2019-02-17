@@ -78,7 +78,7 @@ async function go() {
   });
 
   // Game Loop Fixed TimeStep
-  const FIXED_TIME_STEP = 100;
+  const FIXED_TIME_STEP = 50;
   let currentTimeStep = 0;
   MainLoop.setUpdate((delta) => {
     // Determine if a fixed amount of time has passed on our server before we continue our loop.

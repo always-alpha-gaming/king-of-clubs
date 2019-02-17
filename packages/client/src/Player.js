@@ -122,4 +122,10 @@ export default class Player extends PlayerData {
       // this.ref.setAttribute('velocity', new Vector3());
     }
   }
+
+  unmount() {
+    if (this.ref) {
+      this.ref.remove();
+    }
+  }
 }

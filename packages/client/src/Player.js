@@ -39,70 +39,62 @@ export default class Player extends PlayerData {
       return;
     }
 
-
     const dt = delta / 1000;
 
     // apply gravity
     const deltaV = WORLD_GRAVITY * dt;
     velocity.y -= deltaV;
-    let collisonArray = [];
     const { x, y, z } = this.ref.object3D.position;
     // collisions
     const floor = world.getBlock(Math.floor(x), Math.floor(y) - 1, Math.floor(z));
     if (floor != undefined || y <= 0) {
       velocity.y = 0;
     }
-    if(velocity.x>0){
-      collisonArray.push(world.getBlock(Math.floor(x)+1, Math.floor(y), Math.floor(z)));
-      collisonArray.push(world.getBlock(Math.floor(x)+1, Math.floor(y)+1, Math.floor(z)));
-      collisonArray.push(world.getBlock(Math.floor(x)+1, Math.floor(y)+2, Math.floor(z)));
-      let filteredxp = collisonArray.filter(function (el) {
-        return el != null;
-      });
-      if(filteredxp.length !==0){
-        console.log("xp");
+
+    let collisonArray = [];
+    if (velocity.x > 0) {
+      collisonArray.push(world.getBlock(Math.floor(x) + 1, Math.floor(y), Math.floor(z)));
+      collisonArray.push(world.getBlock(Math.floor(x) + 1, Math.floor(y) + 1, Math.floor(z)));
+      collisonArray.push(world.getBlock(Math.floor(x) + 1, Math.floor(y) + 2, Math.floor(z)));
+      const filteredxp = collisonArray.filter(el => el != null);
+      if (filteredxp.length !== 0) {
+        console.log('xp');
         velocity.x = 0;
-        collisonArray= [];
+        collisonArray = [];
       }
     }
 
-    if(velocity.x<0){
-      collisonArray.push(world.getBlock(Math.floor(x)-1, Math.floor(y), Math.floor(z)));
-      collisonArray.push(world.getBlock(Math.floor(x)-1, Math.floor(y)+1, Math.floor(z)));
-      collisonArray.push(world.getBlock(Math.floor(x)-1, Math.floor(y)+2, Math.floor(z)));
-      let filteredxn = collisonArray.filter(function (el) {
-        return el != null;
-      });
-      if(filteredxn.length !==0){
+    if (velocity.x < 0) {
+      collisonArray.push(world.getBlock(Math.floor(x) - 1, Math.floor(y), Math.floor(z)));
+      collisonArray.push(world.getBlock(Math.floor(x) - 1, Math.floor(y) + 1, Math.floor(z)));
+      collisonArray.push(world.getBlock(Math.floor(x) - 1, Math.floor(y) + 2, Math.floor(z)));
+      const filteredxn = collisonArray.filter(el => el != null);
+      if (filteredxn.length !== 0) {
         velocity.x = 0;
-        console.log("xn");
-        collisonArray= [];
+        console.log('xn');
+        collisonArray = [];
       }
     }
-    if(velocity.z>0){
-      collisonArray.push(world.getBlock(Math.floor(x), Math.floor(y), Math.floor(z)+1));
-      collisonArray.push(world.getBlock(Math.floor(x), Math.floor(y)+1, Math.floor(z)+1));
-      collisonArray.push(world.getBlock(Math.floor(x), Math.floor(y)+2, Math.floor(z))+1);
-      let filteredyp = collisonArray.filter(function (el) {
-        return el != null;
-      });
-      if(filteredyp.length !==0){
-        console.log("zp");
+    if (velocity.z > 0) {
+      collisonArray.push(world.getBlock(Math.floor(x), Math.floor(y), Math.floor(z) + 1));
+      collisonArray.push(world.getBlock(Math.floor(x), Math.floor(y) + 1, Math.floor(z) + 1));
+      collisonArray.push(world.getBlock(Math.floor(x), Math.floor(y) + 2, Math.floor(z) + 1));
+      const filteredyp = collisonArray.filter(el => el != null);
+      if (filteredyp.length !== 0) {
+        console.log('zp');
         velocity.z = 0;
-        collisonArray= [];
+        collisonArray = [];
       }
     }
-    if(velocity.z<0){
-      collisonArray.push(world.getBlock(Math.floor(x), Math.floor(y), Math.floor(z)-1));
-      collisonArray.push(world.getBlock(Math.floor(x), Math.floor(y)+1, Math.floor(z)-1));
-      collisonArray.push(world.getBlock(Math.floor(x), Math.floor(y)+2, Math.floor(z))-1);
-      let filteredyn = collisonArray.filter(function (el) {
-        return el != null;
-      });
-      if(filteredyn.length !==0){
-        console.log("zn");
+    if (velocity.z < 0) {
+      collisonArray.push(world.getBlock(Math.floor(x), Math.floor(y), Math.floor(z) - 1));
+      collisonArray.push(world.getBlock(Math.floor(x), Math.floor(y) + 1, Math.floor(z) - 1));
+      collisonArray.push(world.getBlock(Math.floor(x), Math.floor(y) + 2, Math.floor(z) - 1));
+      const filteredyn = collisonArray.filter(el => el != null);
+      if (filteredyn.length !== 0) {
+        console.log('zn');
         velocity.z = 0;
-        collisonArray= [];
+        collisonArray = [];
       }
     }
 
@@ -110,7 +102,6 @@ export default class Player extends PlayerData {
     this.ref.object3D.position.add(
       new Vector3(velocity.x * dt, velocity.y, velocity.z * dt),
     );
-
   }
 
   draw(scene) {

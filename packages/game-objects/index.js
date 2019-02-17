@@ -1,6 +1,6 @@
 module.exports = {
-  BlockChunkData: require('./src/BlockChunkData'),
-  BlockData: require('./src/BlockData'),
-  MapData: require('./src/MapData'),
-  PlayerData: require('./src/PlayerData'),
+  BlockChunkData: require('./src/Models/BlockChunkData'),
+  BlockData: require('./src/Models/BlockData'),
+  MapData: require('./src/Models/MapData'),
+  PlayerData: require('./src/Models/PlayerData'),
 };

@@ -1,8 +1,10 @@
 const { EVENTS } = require('config');
 const io = require('socket.io')();
 const ServerMapData = require('./ServerMapData');
+const gameLoop = require('./gameLoop');
 const map = new ServerMapData({});
 
+// Handle Client Connection
 io.on('connection', client => {
   console.log('connection from client');
   client.emit('event', {t: EVENTS.WORLD_CREATE, d: map});
@@ -19,3 +21,6 @@ io.on('connection', client => {
 
 });
 io.listen(3000);
+
+// Begin Server Game Loop
+gameLoop();

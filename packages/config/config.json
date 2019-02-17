@@ -22,5 +22,6 @@
     "MOVEMENT_SPEED": 1,
     "JUMP_SPEED": 1,
     "JUMP_HEIGHT": 2
-  }
+  },
+  "WORLD_GRAVITY": 9.8
 }

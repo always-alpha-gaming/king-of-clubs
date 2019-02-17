@@ -8,8 +8,18 @@ class ClientManager {
     }
 
     onConnected(socket) {
+        var address = socket.handshake.address;
+        console.log('Client ('+address.address + ':' + address.port+') has connected');
+
         // Register the Client with the ClientManager
         this.registerClient(socket);
+    }
+    onDisconnect(socket) {
+        var address = socket.handshake.address;
+        console.log('Client ('+address.address + ':' + address.port+') has disconnected');
+        
+        // Register the Client with the ClientManager
+        this.deregisterClient(socket);
     }
 
     registerClient(socket) {
@@ -17,6 +27,8 @@ class ClientManager {
         gameState.registerPlayer(socket);
     }
     deregisterClient(socket) {
+        var i = this.clients.indexOf(socket);
+        this.clients.splice(i, 1);
         gameState.deregisterPlayer(socket);
     }
 }

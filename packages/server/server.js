@@ -5,11 +5,11 @@ const gameLoop = require('./Game/gameLoop');
 // Begin Server Game Loop
 gameLoop();
 
-// Handle Client Connection
-io.on('connection', client => {
-  console.log('connection from client');
+// Handle The Client Connection
+io.on('connection', socket => { clientManager.onConnected(socket); });
 
-  // Notify the ClientManager that someone connected
-  clientManager.onConnected(client);
-});
+// Handle The Client Disconnect
+io.on('disconnect', socket => { clientManager.onDisconnect(socket); });
+
+// Start the Server and Listen on Port 3000
 io.listen(3000);

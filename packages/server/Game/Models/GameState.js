@@ -47,7 +47,16 @@ class GameState {
     }
 
     deregisterPlayer(socket) {
-
+        // Go through all of the players...
+        for(i = 0; i < this.players.length; i++) {
+            // Find the connected Socket...
+            const player = this.players[i];
+            if (player.socket == socket) {
+                // When found, remove it from the Players list
+                var i = this.players.indexOf(socket);
+                this.players.splice(i, 1);
+            }
+        }
     }
 }
 

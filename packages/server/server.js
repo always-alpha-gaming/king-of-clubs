@@ -14,10 +14,10 @@ io.on('connection', (socket) => {
   socket.once('disconnect', function() {
     clientManager.onDisconnect(socket);
   });
-  
+
   // Handle the Client Updates
   socket.on(CONFIG.EVENTS.CLIENT_TICK, function(data) {
-    console.log(data);
+    console.log('got tick', data);
   });
 });
 

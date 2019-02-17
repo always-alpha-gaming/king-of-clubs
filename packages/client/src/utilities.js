@@ -39,10 +39,11 @@ function waitFor(socket, event) {
 
 const $ = document.querySelector.bind(document);
 
-function createElement(type, props) {
+function createElement(type, props, ...children) {
   const thing = document.createElement(type);
   Object.entries(props)
     .forEach(([key, value]) => thing.setAttribute(key, value));
+  children.forEach(child => thing.appendChild(child));
   return thing;
 }
 

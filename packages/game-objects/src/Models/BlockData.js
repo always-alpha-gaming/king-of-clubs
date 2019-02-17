@@ -14,7 +14,7 @@ class BlockData {
     this.id = id;
     this.position = position;
     this.color = color;
-    this.blockType = CONFIG.BLOCK_TYPES[blockType];
+    this.blockType = blockType;
 
     this.height = CONFIG.BLOCK_SIZE;
     this.width = CONFIG.BLOCK_SIZE;
@@ -40,6 +40,10 @@ class BlockData {
     } else {
       this.maxHealth = maxHealth;
     }
+  }
+
+  isTransparent() {
+    return this.color === 'transparent';
   }
 
   update() {}

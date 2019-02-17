@@ -1,6 +1,7 @@
 import MainLoop from 'mainloop.js';
 import 'aframe';
 import 'aframe-extras';
+import './Chunk';
 
 import {
   EVENTS,
@@ -34,7 +35,7 @@ async function go() {
     `${window.location}`.includes('localhost') ? 'http://localhost:3000' : '/',
   );
   // const { borderZ } = await waitFor(connection.socket, EVENTS.WORLD_CREATE.toString());
-  const world = new World(); // borderZ);
+  const world = new World();
 
   const player = new Player({
     id: 'hullo',

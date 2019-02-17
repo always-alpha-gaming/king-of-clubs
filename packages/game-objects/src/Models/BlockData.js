@@ -14,7 +14,7 @@ class BlockData {
     this.id = id;
     this.position = position;
     this.color = color;
-    this.blockType = blockType;
+    this.blockType = CONFIG.BLOCK_TYPES[blockType];
 
     // Color
     if (typeof color !== 'string') {

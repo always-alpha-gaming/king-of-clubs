@@ -167,5 +167,12 @@ export default class MainPlayer extends Player {
 
     this.position = position;
     this.rotation = rotation;
+
+    if (!this.fellOffWorld && this.position.y <= -10) {
+      this.fellOffWorld = true;
+      this.socket.emit(EVENTS.FELL_OFF_WORLD, {});
+    } else if (this.fellOffWorld) {
+      this.fellOffWorld = false;
+    }
   }
 }

@@ -1,17 +1,17 @@
 {
   "TEAMS": [
-    { "name": "Green", "colour": "green" },
-    { "name": "Blue", "colour": "blue" }
+    { "name": "Green", "color": "green" },
+    { "name": "Blue", "color": "blue" }
   ],
   "CHUNK_SIZE": 32,
   "GROUND_HEIGHT": 3,
   "MAP_HEIGHT": 256,
-  "SKYBOX_COLOUR": "cornflowerblue",
+  "SKYBOX_COLOR": "cornflowerblue",
   "BLOCK_SIZE": 1,
   "BLOCK_TYPES": [
-    { "id": 0, "name": "Unknown", "health": -1, "colour": "pink", "passable": true },
-    { "id": 1, "name": "Air", "health": -1, "colour": "transparent", "passable": true },
-    { "id": 2, "name": "Stone", "health": 3, "colour": "grey", "passable": false }
+    { "id": 0, "name": "Unknown", "health": -1, "color": "pink", "passable": true },
+    { "id": 1, "name": "Air", "health": -1, "color": "transparent", "passable": true },
+    { "id": 2, "name": "Stone", "health": 3, "color": "grey", "passable": false }
   ],
   "EVENTS": {
     "WORLD_CREATE": 1,

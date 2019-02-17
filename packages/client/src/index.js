@@ -31,16 +31,16 @@ async function go() {
   const connection = await connect(
     `${window.location}`.includes('localhost') ? 'http://localhost:3000' : '/',
   );
+  const world = new World();
+  connection.on(EVENTS.CHUNK_CREATE, chunk => world.addChunk(chunk));
   const { borderZ, me } = await waitFor(connection.socket, EVENTS.WORLD_CREATE);
-  const world = new World(borderZ);
+  world.borderZ = borderZ;
 
   const player = new Player(me);
   player.setRef(playerElement);
   player.setColor();
   player.setDimensions();
   player.setCameraHeight();
-
-  connection.on(EVENTS.CHUNK_CREATE, chunk => world.addChunk(chunk));
 
   // Game Loop Fixed TimeStep
   const FIXED_TIME_STEP = 100;

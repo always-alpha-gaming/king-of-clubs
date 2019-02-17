@@ -1,7 +1,7 @@
 import io from 'socket.io-client';
 import EventEmitter from 'eventemitter3';
 
-class SocketWrapper extends EventEmitter {
+export class SocketWrapper extends EventEmitter {
   constructor(socket) {
     super();
     this.socket = socket;
@@ -12,7 +12,7 @@ class SocketWrapper extends EventEmitter {
   }
 }
 
-function connect(url, options) {
+export function connect(url, options) {
   return new Promise((resolve, reject) => {
     const socket = io(url, options);
     socket.on('connect', () => resolve(new SocketWrapper(socket)));
@@ -24,7 +24,7 @@ function connect(url, options) {
   });
 }
 
-function waitFor(socket, event) {
+export function waitFor(socket, event) {
   return new Promise((resolve, reject) => {
     const waiter = ({ t, d }) => {
       if (t === event) {
@@ -37,7 +37,7 @@ function waitFor(socket, event) {
   });
 }
 
-function collidingAxes(a, b) {
+export function collidingAxes(a, b) {
   const axes = [];
 
   const ax = a.position.x;
@@ -58,20 +58,12 @@ function collidingAxes(a, b) {
   return axes;
 }
 
-const $ = document.querySelector.bind(document);
+export const $ = document.querySelector.bind(document);
 
-function createElement(type, props, ...children) {
+export function createElement(type, props, ...children) {
   const thing = document.createElement(type);
   Object.entries(props)
     .forEach(([key, value]) => thing.setAttribute(key, value));
   children.forEach(child => thing.appendChild(child));
   return thing;
 }
-
-module.exports = {
-  $,
-  collidingAxes,
-  createElement,
-  connect,
-  waitFor,
-};

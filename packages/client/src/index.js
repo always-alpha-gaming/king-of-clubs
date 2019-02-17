@@ -8,6 +8,7 @@ import { EVENTS, SKYBOX_COLOR } from 'config';
 import { $, connect, waitFor } from './utilities';
 import World from './World';
 import Player from './Player';
+import MainPlayer from './MainPlayer';
 
 // custom velocity component
 registerComponent('velocity', {
@@ -24,7 +25,8 @@ async function go() {
 
   // wait for the connection
   const connection = await connect(
-    `${window.location}`.includes('localhost') ? 'http://localhost:3000' : '/',
+    `http://${window.location.hostname}:3000`,
+    // `${window.location}`.includes('localhost') ? 'http://localhost:3000' : '/',
   );
 
   // world instance, contains all chunks and blocks
@@ -35,11 +37,20 @@ async function go() {
   // listen for events from the server
   connection.on(EVENTS.CHUNK_CREATE, chunk => world.addChunk(chunk));
   connection.on(EVENTS.PLAYER_ENTER_RANGE, (player) => {
-    players[player.id] = player;
+    players[player.id] = new Player(player);
   });
   connection.on(EVENTS.PLAYER_LEAVE_RANGE, ({ id }) => {
     players[id].unmount();
     delete players[id];
+  });
+  connection.on(EVENTS.WORLD_TICK, ({ players: newPlayers }) => {
+    newPlayers.forEach((player) => {
+      if (!players[player.id]) {
+        players[player.id] = new Player(player);
+      } else {
+        players[player.id] = Object.assign(players[player.id], player);
+      }
+    });
   });
 
   // wait for world and player information
@@ -48,7 +59,7 @@ async function go() {
   world.borderZ = borderZ;
 
   // initialize current player
-  const player = new Player(me);
+  const player = new MainPlayer(me);
   player.setRef(playerElement);
   player.setColor();
   player.setDimensions();

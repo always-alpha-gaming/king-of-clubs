@@ -26,8 +26,9 @@ async function go() {
 
   // wait for the connection
   const connection = await connect(
-    `http://${window.location.hostname}:3000`,
-    // `${window.location}`.includes('localhost') ? 'http://localhost:3000' : '/',
+    /^\d+\.\d+\.\d+\.\d+$/.test(window.location.hostname)
+      ? `http://${window.location.hostname}:3000`
+      : '/',
   );
 
   // world instance, contains all chunks and blocks

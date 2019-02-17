@@ -109,10 +109,13 @@ class GameState {
     if (playerSocketPair == null) return;
     if (playerSocketPair.playerData.health <= 0) return; // Ignore ticks from dead players
     playerSocketPair.playerData = data.me;
-    console.log(data);
+    // console.log(data);
   }
 
   receivedPlayerShoot(clientManager, socket, data) {
+    console.log(data);
+
+    // Get the Socket of the Player
     const playerSocketPair = this.getSocketPlayerPairFromSocket(socket);
     if (playerSocketPair == null) return;
 
@@ -131,7 +134,6 @@ class GameState {
       targetSocketPair.playerData.health = -999;
       clientManager.broadcastMessage(CONFIG.EVENTS.PLAYER_LEAVE_RANGE, targetSocketPair.playerData);
     }
-    console.log(data);
   }
 
   receivedBlockPlace(socket, data) {

@@ -18,7 +18,7 @@ class ClientManager {
   }
 
   onClientTick(socket, data) {
-    this.printConsoleLog(socket, 'has received Client Tick Event');
+    //this.printConsoleLog(socket, 'has received Client Tick Event');
     gameState.receivedClientTick(socket, data);
   }
 

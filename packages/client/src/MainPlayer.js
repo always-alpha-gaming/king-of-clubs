@@ -4,6 +4,8 @@ import { $ } from './utilities';
 
 const { Vector3 } = THREE;
 
+const headOffset = new Vector3(0, 2, 0);
+
 export default class MainPlayer extends Player {
   constructor({ socket, ...rest }) {
     super(rest);
@@ -37,12 +39,13 @@ export default class MainPlayer extends Player {
 
     const { position } = this.ref.object3D;
 
-    const { rotation } = camera.object3D;
+    const head = position.clone().add(headOffset);
 
-    const direction = new THREE.Vector3(0, 0, -1).applyEuler(rotation)
-      .normalize();
+    const { quaternion } = camera.object3D;
 
-    const destination = world.raycast(position, direction, 5);
+    const direction = new THREE.Vector3(0, 0, -1).applyQuaternion(quaternion);
+
+    const destination = world.raycast(head, direction, 5);
 
     if (!destination) {
       return;
@@ -58,19 +61,20 @@ export default class MainPlayer extends Player {
 
     const { position } = this.ref.object3D;
 
-    const { rotation } = camera.object3D;
+    const head = position.clone().add(headOffset);
 
-    const direction = new THREE.Vector3(0, 0, -1).applyEuler(rotation)
-      .normalize();
+    const { quaternion } = camera.object3D;
 
-    const destination = world.raycast(position, direction, 5);
+    const direction = new THREE.Vector3(0, 0, -1).applyQuaternion(quaternion);
+
+    const destination = world.raycast(head, direction, 5);
 
     if (!destination) {
       return;
     }
 
     this.socket.emit(EVENTS.BLOCK_PLACE, {
-      position: [destination.x, destination.y + 2, destination.z],
+      position: [destination.x, destination.y + 1, destination.z],
     });
   }
 

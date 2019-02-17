@@ -39,7 +39,7 @@ class ClientManager {
 
   onFellOffWorld(socket, data) {
     this.printConsoleLog(socket, 'has fallen off the world');
-    gameState.receivedPlayerFellOffWorld(socket, data);
+    gameState.receivedPlayerFellOffWorld(this, socket, data);
   }
 
   printConsoleLog(socket, message) {

@@ -162,13 +162,20 @@ class GameState {
     chunk.setBlock(x, y, z, null);
   }
 
-  receivedPlayerFellOffWorld(socket, data) {
+  receivedPlayerFellOffWorld(clientManager, socket, data) {
     const playerSocketPair = this.getSocketPlayerPairFromSocket(socket);
     if (playerSocketPair == null) return;
 
     // Just respawn them
     playerSocketPair.playerData.position = this.getRandomPlayerPosition();
     playerSocketPair.playerData.rotation = this.getRandomPlayerRotation();
+
+    // And resend to client
+    const fellOffWorldData {
+      position: playerSocketPair.playerData.position,
+      rotation: playerSocketPair.playerData.rotation
+    }
+    clientManager.broadcastMessageToSocket(socket, CONFIG.EVENTS.FELL_OFF_WORLD, fellOffWorldData)
   }
 }
 

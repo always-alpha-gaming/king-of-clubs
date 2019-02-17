@@ -26,7 +26,8 @@ async function go() {
 
   // wait for the connection
   const connection = await connect(
-    /^\d+\.\d+\.\d+\.\d+$/.test(window.location.hostname)
+    (/^\d+\.\d+\.\d+\.\d+$/.test(window.location.hostname)
+      || window.location.hostname === 'localhost')
       ? `http://${window.location.hostname}:3000`
       : '/',
   );

@@ -9,6 +9,7 @@ export default class Chunk extends BlockChunkData {
     const geometries = [];
 
     this.forEachBlock((block) => {
+      if (!block) return;
       // check in all dimensions if there is null
       const [x, y, z] = block.position;
       // console.log(block.position);

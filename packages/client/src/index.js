@@ -5,12 +5,13 @@ import { EVENTS } from 'config';
 import { $, connect, waitFor } from './utilities';
 import World from './World';
 
-const scene = $('a-scene');
-
 async function go() {
-  const connection = await connect('/socket');
-  const { borderZ } = await waitFor(EVENTS.WORLD_CREATE);
-  const world = new World(borderZ);
+  const scene = $('a-scene');
+  const connection = await connect(('' + window.location).includes('localhost') ? 'http://localhost:3000' : '/');
+  // const { borderZ } = await waitFor(connection.socket, EVENTS.WORLD_CREATE.toString());
+  const world = new World(/* borderZ*/ 5);
+
+  connection.on(EVENTS.CHUNK_CREATE.toString(), () => console.log('tchucchr'));
 
   connection.on(EVENTS.CHUNK_CREATE, chunk => world.addChunk(chunk));
 

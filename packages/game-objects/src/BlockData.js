@@ -8,13 +8,20 @@ class BlockData {
    * @param {Color?} param0.color A Named or Hex Colour
    * @param {Number} param0.health The Health of this block
    * @param {Number} param0.maxHealth The Maximum Health of this block
-   * @param {Object} param0.blockType The Block Type of this Block
+   * @param {Number} param0.blockType The Block Type CONFIG Index of this Block
    */
   constructor({ id, position, color = null, health = null, maxHealth = null, blockType = 0 }) {
     this.id = id;
     this.position = position;
     this.color = color;
     this.blockType = blockType;
+
+    // Color
+    if (typeof color !== 'number') {
+      this.color = CONFIG.BLOCK_TYPES[blockType].colour;
+    } else {
+      this.color = color;
+    }
 
     // Health
     if (typeof health !== 'number') {

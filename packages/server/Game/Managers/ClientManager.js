@@ -8,22 +8,22 @@ class ClientManager {
   }
 
   onConnected(socket) {
-    printConsoleLog(socket, "has connected");
+    this.printConsoleLog(socket, "has connected");
     this.registerClient(socket);
   }
 
   onDisconnect(socket) {
-    printConsoleLog(socket, "has disconnected");
+    this.printConsoleLog(socket, "has disconnected");
     this.deregisterClient(socket);
   }
 
   onClientTick(socket, data) {
-    printConsoleLog(socket, "has recieved Client Tick Event");
+    this.printConsoleLog(socket, "has recieved Client Tick Event");
     gameState.recievedClientTick(socket, data);
   }
 
   onPlayerShoot(socket, data) {
-    printConsoleLog(socket, "has recieved a Player Shoot Event");
+    this.printConsoleLog(socket, "has recieved a Player Shoot Event");
     gameState.recievedPlayerShoot(socket, data);
   }
 

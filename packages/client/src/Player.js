@@ -48,7 +48,8 @@ export default class Player extends PlayerData {
     const { x, y, z } = this.ref.object3D.position;
     // collisions
     const floor = world.getBlock(Math.floor(x), Math.floor(y) - 1, Math.floor(z));
-    if (floor !== undefined || y <= 0) {
+    if (floor != undefined || y <= 0) {
+      console.log("here");
       velocity.y = 0;
     }
 

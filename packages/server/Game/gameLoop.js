@@ -4,7 +4,7 @@ const clientManager = require('./Managers/ClientManager');
 const gameState = require('./Models/GameState');
 
 // Game Loop Fixed TimeStep
-const FIXED_TIME_STEP = 100;
+const FIXED_TIME_STEP = 50;
 let currentTimeStep = 0;
 
 /**
@@ -32,7 +32,7 @@ function update(deltaTime) {
   const tickData = {
     players: allPlayerData
   };
-  
+
   // Tick out the Global Game State
   clientManager.broadcastMessage(CONFIG.EVENTS.WORLD_TICK, tickData);
 };

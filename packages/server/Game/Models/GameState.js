@@ -1,5 +1,5 @@
 const CONFIG = require('config');
-const { PlayerData } = require('game-objects');
+const { PlayerData, BlockData } = require('game-objects');
 const ServerMapData = require('./ServerMapData');
 const SocketPlayerPair = require('./SocketPlayerPair');
 const idManager = require('../Managers/IDManager');
@@ -157,20 +157,23 @@ class GameState {
     }
   }
 
-  receivedBlockPlace(socket, data) {
+  receivedBlockPlace(clientManager, socket, data) {
     const playerSocketPair = this.getSocketPlayerPairFromSocket(socket);
     if (playerSocketPair == null) return;
     const [x, y, z] = data.position;
     const chunk = this.map.getChunkContainingAbsolute(x, z);
     chunk.setBlock(x, y, z, new BlockData({ id: `${x}|${y}|${z}`, position: [x, y, z], blockType: 2 }));
+    clientManager.broadcastMessage(CONFIG.EVENTS.CHUNK_CREATE, chunk);
   }
 
-  receivedBlockDelete(socket, data) {
+  receivedBlockDelete(clientManager, socket, data) {
     const playerSocketPair = this.getSocketPlayerPairFromSocket(socket);
     if (playerSocketPair == null) return;
     const [x, y, z] = data.position;
     const chunk = this.map.getChunkContainingAbsolute(x, z);
     chunk.setBlock(x, y, z, null);
+    console.log(`Sending chunk with pos ${chunk.position} to client`);
+    clientManager.broadcastMessage(CONFIG.EVENTS.CHUNK_CREATE, chunk);
   }
 
   receivedPlayerFellOffWorld(clientManager, socket, data) {
@@ -184,9 +187,9 @@ class GameState {
     // And resend to client
     const fellOffWorldData = {
       position: playerSocketPair.playerData.position,
-      rotation: playerSocketPair.playerData.rotation
-    }
-    clientManager.broadcastMessageToSocket(socket, CONFIG.EVENTS.FELL_OFF_WORLD, fellOffWorldData)
+      rotation: playerSocketPair.playerData.rotation,
+    };
+    clientManager.broadcastMessageToSocket(socket, CONFIG.EVENTS.FELL_OFF_WORLD, fellOffWorldData);
   }
 }
 

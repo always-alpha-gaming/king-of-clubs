@@ -31,11 +31,18 @@ export default class World {
   constructor(borderZ, blocks) {
     this.map = new MapData({});
     this.blocks = blocks || [];
+    this.chunksToUnMount = [];
     this.borderZ = borderZ;
     this.chunkToMesh = new WeakMap();
   }
 
   addChunk(chunk) {
+    const [x, z] = chunk.position;
+
+    if (this.map.getChunk(x, z)) {
+      this.chunksToUnMount.push(this.map.getChunk(x, z));
+    }
+
     const blocks = chunk.blocks
       .map(
         (i, x) => i
@@ -70,6 +77,14 @@ export default class World {
   }
 
   draw(scene) {
+    if (this.chunksToUnMount.length > 0) {
+      this.chunksToUnMount.forEach((chunk) => {
+        const mesh = this.chunkToMesh.get(chunk);
+        scene.object3D.remove(mesh);
+      });
+      this.chunksToUnMount = [];
+    }
+
     this.map.forEachChunk((chunk) => {
       const oldMesh = this.chunkToMesh.get(chunk);
       const updated = chunk.hasUpdated() === true;
@@ -96,7 +111,7 @@ export default class World {
    *
    * If the callback returns a true value, the traversal will be stopped.
    */
-  raycast(origin, direction, radius, callback) {
+  raycast(origin, direction, radius) {
     // From "A Fast Voxel Traversal Algorithm for Ray Tracing"
     // by John Amanatides and Andrew Woo, 1987
     // <http://www.cse.yorku.ca/~amana/research/grid.pdf>
@@ -114,40 +129,46 @@ export default class World {
     // if we took a step sufficient to cross a cube boundary along that axis
     // (i.e. change the integer part of the coordinate) in the variables
     // tMaxX, tMaxY, and tMaxZ.
+    console.log('Raycast called with ', origin, direction, radius);
 
     // Cube containing origin point.
-    var x = Math.floor(origin[0]);
-    var y = Math.floor(origin[1]);
-    var z = Math.floor(origin[2]);
+    var x = Math.floor(origin.x);
+    var y = Math.floor(origin.y);
+    var z = Math.floor(origin.z);
+
+    console.log('initial coords', x, y, z);
+
     // Break out direction vector.
-    var dx = direction[0];
-    var dy = direction[1];
-    var dz = direction[2];
+    var dx = direction.x;
+    var dy = direction.y;
+    var dz = direction.z;
     // Direction to increment x,y,z when stepping.
     var stepX = signum(dx);
     var stepY = signum(dy);
     var stepZ = signum(dz);
     // See description above. The initial values depend on the fractional
     // part of the origin.
-    var tMaxX = intbound(origin[0], dx);
-    var tMaxY = intbound(origin[1], dy);
-    var tMaxZ = intbound(origin[2], dz);
+    var tMaxX = intbound(origin.x, dx);
+    var tMaxY = intbound(origin.y, dy);
+    var tMaxZ = intbound(origin.z, dz);
     // The change in t when taking a step (always positive).
     var tDeltaX = stepX / dx;
     var tDeltaY = stepY / dy;
     var tDeltaZ = stepZ / dz;
     // Buffer for reporting faces to the callback.
-    var face = []
+    var face = [];
 
     // Avoids an infinite loop.
-    if (dx === 0 && dy === 0 && dz === 0)
-      throw new RangeError('Raycast in zero direction!');
+    if (dx === 0 && dy === 0 && dz === 0) {
+      throw new RangeError('Raycast in zero direction!')
+    }
 
     // Rescale from units of 1 cube-edge to units of 'direction' so we can
     // compare with 't'.
     radius /= Math.sqrt(dx * dx + dy * dy + dz * dz);
 
     while (true) {
+      console.log(`Probing ${x}, ${y}, ${z}`);
       // Invoke the callback, unless we are not *yet* within the bounds of the
       // world.
       if (this.getBlock(x, y, z)) {

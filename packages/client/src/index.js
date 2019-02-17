@@ -56,11 +56,22 @@ async function go() {
       const { health, position, rotation } = newPlayer;
       console.log(player.position, position);
       player.health = health;
+      const { x, y, z } = position;
       player.position = position;
+      player.ref.object3D.position.set(x, y, z);
       player.rotation = rotation;
       return;
     }
     players.push(new Player(newPlayer));
+  });
+  connection.on(EVENTS.FELL_OFF_WORLD, ({ position, rotation }) => {
+    console.log('hullo', position, rotation);
+    player.position = position;
+    player.rotation = rotation;
+    const { x, y, z } = position;
+    const { x: rx, y: ry, z: rz } = rotation;
+    player.ref.object3D.position.set(x, y, z);
+    player.ref.object3D.rotation.set(rx, ry, rz);
   });
   connection.on(EVENTS.PLAYER_LEAVE_RANGE, ({ id }) => {
     const index = players.findIndex(p => p && p.id === id);

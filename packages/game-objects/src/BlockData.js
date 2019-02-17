@@ -18,14 +18,14 @@ class BlockData {
 
     // Health
     if (typeof health !== 'number') {
-      this.health = CONFIG.BLOCK_TYPES[blockType].health
+      this.health = CONFIG.BLOCK_TYPES[blockType].health;
     } else {
       this.health = health;
     }
 
     // Max Health
     if (typeof maxHealth !== 'number') {
-      this.maxHealth = CONFIG.BLOCK_TYPES[blockType].health
+      this.maxHealth = CONFIG.BLOCK_TYPES[blockType].health;
     } else {
       this.maxHealth = maxHealth;
     }

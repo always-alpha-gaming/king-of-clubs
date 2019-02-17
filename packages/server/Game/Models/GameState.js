@@ -31,6 +31,13 @@ class GameState {
         // Create the Socket Player Pair and Add them to the list
         const socketPlayerPair = new SocketPlayerPair(socket, newPlayer);
         this.players.push(socketPlayerPair);
+
+        // Return the generated socketPlayerPair
+        return socketPlayerPair;
+    }
+
+    deregisterPlayer(socket) {
+
     }
 }
 

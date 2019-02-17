@@ -11,16 +11,7 @@ gameLoop();
 io.on('connection', client => {
   console.log('connection from client');
 
-  // Register the Client with the ClientManager
-  clientManager.registerClient(client);
-
-  // Broadcast the Initial GameState
-  client.emit('event', {t: EVENTS.WORLD_CREATE, d: gameState.map});
-  gameState.map.blockChunks.forEach(row => {
-    row.forEach(chunk => {
-      client.emit('event', {t: EVENTS.CHUNK_CREATE, d: chunk})
-    })
-  })
-
+  // Notify the ClientManager that someone connected
+  clientManager.onConnected(client);
 });
 io.listen(3000);

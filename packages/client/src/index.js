@@ -29,7 +29,21 @@ async function go() {
 
   // world instance, contains all chunks and blocks
   const world = new World();
+  // all players within range, indexed by ID
+  const players = {};
+
+  // listen for events from the server
   connection.on(EVENTS.CHUNK_CREATE, chunk => world.addChunk(chunk));
+  connection.on(EVENTS.PLAYER_ENTER_RANGE, (player) => {
+    players[player.id] = player;
+  });
+  connection.on(EVENTS.PLAYER_LEAVE_RANGE, ({ id }) => {
+    players[id].unmount();
+    delete players[id];
+  });
+
+  // wait for world and player information
+  // TODO: loading screen
   const { borderZ, me } = await waitFor(connection.socket, EVENTS.WORLD_CREATE);
   world.borderZ = borderZ;
 
@@ -56,10 +70,12 @@ async function go() {
     }
 
     player.update(delta, world);
+    Object.values(players).forEach(p => p.update(delta, world));
     world.update(delta);
   });
   MainLoop.setDraw(() => {
     player.draw(scene);
+    Object.values(players).forEach(p => p.draw(scene));
     world.draw(scene);
   });
   MainLoop.start();

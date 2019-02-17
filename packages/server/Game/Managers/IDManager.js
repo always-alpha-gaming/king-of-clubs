@@ -1,12 +1,12 @@
 class IDManager {
-    constructor() {
-        this.currentID = 0;
-    }
+  constructor() {
+    this.currentID = 0;
+  }
 
-    getNewID() {
-        this.currentID++;
-        return this.currentID;
-    }
+  getNewID() {
+    this.currentID++;
+    return this.currentID;
+  }
 }
 
 // Export an instance of the class

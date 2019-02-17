@@ -9,7 +9,7 @@ const baseHeight = 64;
  * @param {number} z
  * @param {string} [seed]
  */
-function genChunk(x, z, seed = 'seed') {
+module.exports = function genChunk(x, z, seed = 'seed') {
   const simplex = new SimplexNoise(seed);
 
   const blocks = new Array(CONFIG.CHUNK_SIZE)
@@ -36,8 +36,4 @@ function genChunk(x, z, seed = 'seed') {
   }
   
   return new BlockChunkData({id: `${x}|${z}`, blocks, position: [x, z]})
-}
-
-module.exports = {
-  genChunk,
 };

@@ -4,6 +4,22 @@ import Player from './Player';
 const { Vector3 } = THREE;
 
 export default class MainPlayer extends Player {
+
+  reload() {
+    if (!this.canShoot) {
+      this.canShoot = true;
+    }
+    window.addEventListener('click', (evt) => {
+      if (this.canShoot) {
+        console.log('i fired my gun at: ', evt.detail.intersection.point);
+        this.canShoot = false;
+        setTimeout(() => {
+          this.canShoot = true;
+        }, 1000);
+      }
+    });
+  }
+
   update(delta, world) {
     if (!this.ref) {
       return;

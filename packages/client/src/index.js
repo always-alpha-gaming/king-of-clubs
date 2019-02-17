@@ -48,6 +48,7 @@ async function go() {
   player.setColor();
   player.setDimensions();
   player.setCameraHeight();
+  player.reload();
 
   connection.on(EVENTS.PLAYER_ENTER_RANGE, (newPlayer) => {
     console.log(`entered range: ${newPlayer.id}`);

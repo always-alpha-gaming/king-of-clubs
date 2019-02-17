@@ -52,7 +52,7 @@ export default class MainPlayer extends Player {
     }
 
     this.socket.emit(EVENTS.BLOCK_PLACE, {
-      position: [destination.x, destination.y + 2, destination.z],
+      position: [destination.x, destination.y + 1, destination.z],
     });
 
     console.log(destination);

@@ -22,7 +22,10 @@
     "SPRINT_MODIFIER": 1.25,
     "MOVEMENT_SPEED": 1,
     "JUMP_SPEED": 1,
-    "JUMP_HEIGHT": 2
+    "JUMP_HEIGHT": 2,
+    "BASE_SIZE": 0.75,
+    "HEIGHT": 2.5,
+    "CAMERA_HEIGHT": 2.3
   },
   "WORLD_GRAVITY": 9.8
 }

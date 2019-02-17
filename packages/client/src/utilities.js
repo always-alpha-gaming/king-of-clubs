@@ -37,6 +37,27 @@ function waitFor(socket, event) {
   });
 }
 
+function collidingAxes(a, b) {
+  const axes = [];
+
+  const ax = a.position.x;
+  const bx = b.position.x;
+  const ay = a.position.y;
+  const by = b.position.y;
+  const az = a.position.z;
+  const bz = b.position.z;
+  if (ax < bx + b.width && ax + a.width > bx) {
+    axes.push('x');
+  }
+  if (ay < by + b.height && ay + a.height > by) {
+    axes.push('y');
+  }
+  if (az < bz + b.depth && az + a.depth > bz) {
+    axes.push('z');
+  }
+  return axes;
+}
+
 const $ = document.querySelector.bind(document);
 
 function createElement(type, props, ...children) {
@@ -49,6 +70,7 @@ function createElement(type, props, ...children) {
 
 module.exports = {
   $,
+  collidingAxes,
   createElement,
   connect,
   waitFor,

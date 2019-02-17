@@ -16,6 +16,10 @@ class BlockData {
     this.color = color;
     this.blockType = CONFIG.BLOCK_TYPES[blockType];
 
+    this.height = CONFIG.BLOCK_SIZE;
+    this.width = CONFIG.BLOCK_SIZE;
+    this.depth = CONFIG.BLOCK_SIZE;
+
     // Color
     if (typeof color !== 'string') {
       this.color = CONFIG.BLOCK_TYPES[blockType].color;

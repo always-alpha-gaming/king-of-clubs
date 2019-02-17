@@ -35,7 +35,6 @@ export default class World {
   }
 
   addChunk(chunk) {
-    console.log('add chunk called with chunk', chunk);
     chunk.blocks.forEach(
       y => y.forEach(
         z => z.forEach(

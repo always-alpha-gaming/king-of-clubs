@@ -16,6 +16,10 @@ class PlayerData {
     this.rotation = rotation;
     this.team = CONFIG.TEAMS[teamIndex];
 
+    this.width = PLAYER.BASE_SIZE;
+    this.depth = PLAYER.BASE_SIZE;
+    this.height = PLAYER.HEIGHT;
+
     // Health
     if (typeof health !== 'number') {
       this.health = CONFIG.PLAYER.MAX_HEALTH;

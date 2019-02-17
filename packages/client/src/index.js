@@ -2,7 +2,12 @@ import MainLoop from 'mainloop.js';
 import 'aframe';
 import 'aframe-extras';
 
-import { EVENTS, SKYBOX_COLOR, TEAMS } from 'config';
+import {
+  EVENTS,
+  SKYBOX_COLOR,
+  TEAMS,
+  PLAYER,
+} from 'config';
 import {
   $,
   connect,
@@ -38,7 +43,9 @@ async function go() {
     team: TEAMS[0],
   });
   player.setRef(playerElement);
-  player.setColor(player.team.color);
+  player.setColor();
+  player.setDimensions();
+  player.setCameraHeight();
 
   connection.on(EVENTS.CHUNK_CREATE, chunk => world.addChunk(chunk));
 

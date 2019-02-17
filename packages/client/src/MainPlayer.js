@@ -17,13 +17,13 @@ export default class MainPlayer extends Player {
     }
     window.addEventListener('click', (evt) => {
       if (this.canShoot) {
-        try {
-          this.socket.emit(EVENTS.PLAYER_SHOOT, {
-            targetID: evt.detail.intersectedEl.dataset.userId,
-          });
-        } catch (e) {
-          //
+        if (!evt.detail.intersectedEl) {
+          return;
         }
+        console.log('Shooting at:', evt.detail.intersectedEl.dataset.userId);
+        this.socket.emit(EVENTS.PLAYER_SHOOT, {
+          targetID: Number.parseInt(evt.detail.intersectedEl.dataset.userId, 10),
+        });
         this.canShoot = false;
         setTimeout(() => {
           this.canShoot = true;

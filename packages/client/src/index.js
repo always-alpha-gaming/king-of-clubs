@@ -44,7 +44,7 @@ async function go() {
   world.borderZ = borderZ;
 
   // initialize current player
-  const player = new MainPlayer(me);
+  const player = new MainPlayer({ ...me, socket: connection.socket });
   player.setRef(playerElement);
   player.setColor();
   player.setDimensions();
@@ -52,8 +52,9 @@ async function go() {
   player.reload();
 
   connection.on(EVENTS.PLAYER_ENTER_RANGE, (newPlayer) => {
-    if (newPlayer.id !== player.id) {
+    if (newPlayer.id === player.id) {
       const { health, position, rotation } = newPlayer;
+      console.log(player.position, position);
       player.health = health;
       player.position = position;
       player.rotation = rotation;

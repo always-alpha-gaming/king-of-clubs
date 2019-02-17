@@ -6,7 +6,8 @@ import { $, connect, waitFor } from './utilities';
 import World from './World';
 
 const scene = $('a-scene');
-(async () => {
+
+async function go() {
   const connection = await connect('/socket');
   const { borderZ } = await waitFor(EVENTS.WORLD_CREATE);
   const world = new World(borderZ);
@@ -20,4 +21,6 @@ const scene = $('a-scene');
     world.draw(scene);
   });
   MainLoop.start();
-})();
+}
+
+document.addEventListener('DOMContentLoaded', go);

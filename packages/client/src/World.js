@@ -1,4 +1,8 @@
+import { MapData } from 'game-objects';
 import Block from './Block';
+import Chunk from './Chunk';
+import 'three';
+import '../lib/BufferGeometryUtils';
 
 let dot = true;
 setTimeout(() => {
@@ -10,58 +14,32 @@ export default class World {
    * @param {number} borderZ
    */
   constructor(borderZ, blocks) {
+    this.map = new MapData({});
     this.blocks = blocks || [];
     this.borderZ = borderZ;
-  }
-
-  /**
-   * @param {BlockData} block
-   */
-  addBlock(block) {
-    if (block === null) {
-      return; // TODO: Generate air block on the fly
-    }
-    const blockObject = new Block(block);
-    const [x, y, z] = blockObject.position;
-
-    if (!this.blocks[x]) {
-      this.blocks[x] = [];
-    }
-    if (!this.blocks[x][y]) {
-      this.blocks[x][y] = [];
-    }
-
-    this.blocks[x][y][z] = blockObject;
+    this.chunkToMesh = new WeakMap();
   }
 
   addChunk(chunk) {
-    chunk.blocks.forEach(
-      y => y.forEach(
-        z => z.forEach(
-          block => this.addBlock(block),
-        ),
-      ),
-    );
-  }
+    console.log(chunk.blocks);
 
-  getBlock(x, y, z) {
-    if (!this.blocks[x]) {
-      return undefined;
-    }
-    if (!this.blocks[x][y]) {
-      return undefined;
-    }
-    return this.blocks[x][y][z];
-  }
+    const blocks = chunk.blocks
+      .map(
+        (i, x) => i
+          .map(
+            (j, y) => j
+              .map((block, z) => {
+                if (block !== null) {
+                  return new Block(block);
+                }
+                return new Block({ id: `${x}|${y}|${z}`, position: [x, y, z], blockType: 1 });
+              }),
+          ),
+      );
 
-  forEachBlock(fn) {
-    this.blocks.forEach(
-      y => y.forEach(
-        z => z.forEach(
-          block => fn(block),
-        ),
-      ),
-    );
+    console.log(blocks);
+
+    this.map.addChunk(new Chunk({ ...chunk, blocks }));
   }
 
   update(delta) {
@@ -69,29 +47,18 @@ export default class World {
   }
 
   draw(scene) {
-    if (!dot) {
-      console.log('ret');
-      return;
-    } else {
-      console.log('draw');
-    }
+    this.map.forEachChunk((chunk) => {
+      const oldMesh = this.chunkToMesh.get(chunk);
+      const updated = chunk.hasUpdated() === true;
 
-    this.forEachBlock((block) => {
-      // check in all dimensions if there is null
-      const [x, y, z] = block.position;
-
-      const renderTop = !this.getBlock(x, y + 1, z);
-      const renderBottom = (y !== 0 && !this.getBlock(x, y - 1, z));
-      const renderLeft = !this.getBlock(x + 1, y, z);
-      const renderRight = !this.getBlock(x - 1, y, z);
-      const renderFront = !this.getBlock(x, y, z - 1);
-      const renderBack = !this.getBlock(x, y, z + 1);
-
-      // ok
-      if (
-        renderTop || renderBottom || renderLeft || renderRight || renderFront || renderBack
-      ) {
-        block.draw(scene, renderTop, renderBottom, renderLeft, renderRight, renderFront, renderBack);
+      if (oldMesh && updated) {
+        scene.object3D.remove(oldMesh);
+      }
+      if (!oldMesh || updated) {
+        const newMesh = chunk.render();
+        if (!newMesh || newMesh.length === 0) return;
+        this.chunkToMesh.set(chunk, newMesh);
+        scene.object3D.add(newMesh);
       }
     });
   }

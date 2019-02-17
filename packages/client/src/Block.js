@@ -1,97 +1,72 @@
 import { BLOCK_SIZE } from 'config';
 import { BlockData } from 'game-objects';
+import 'three';
 
-import { createElement } from './utilities';
+const planeTopGeometry = new THREE.PlaneBufferGeometry(BLOCK_SIZE, BLOCK_SIZE);
+planeTopGeometry.rotateX(-Math.PI / 2);
+planeTopGeometry.translate(0, 0.5, 0);
+
+const planeBottomGeometry = new THREE.PlaneBufferGeometry(BLOCK_SIZE, BLOCK_SIZE);
+planeBottomGeometry.rotateX(-Math.PI / 2);
+planeBottomGeometry.translate(0, - 0.5, 0);
+
+const planeRightGeometry = new THREE.PlaneBufferGeometry(BLOCK_SIZE, BLOCK_SIZE);
+planeRightGeometry.rotateY(-Math.PI / 2);
+planeRightGeometry.translate(-0.5, 0, 0);
+
+const planeLeftGeometry = new THREE.PlaneBufferGeometry(BLOCK_SIZE, BLOCK_SIZE);
+planeLeftGeometry.rotateY(Math.PI / 2);
+planeLeftGeometry.translate(0.5, 0, 0);
+
+const planeBackGeometry = new THREE.PlaneBufferGeometry(BLOCK_SIZE, BLOCK_SIZE);
+planeBackGeometry.translate(0, 0, 0.5);
+
+const planeFrontGeometry = new THREE.PlaneBufferGeometry(BLOCK_SIZE, BLOCK_SIZE);
+planeFrontGeometry.rotateY(Math.PI);
+planeFrontGeometry.translate(0, 0, -0.5);
 
 export default class Block extends BlockData {
-  draw(scene, renderTop, renderBottom, renderLeft, renderRight, renderFront, renderBack) {
+  render(renderTop, renderBottom, renderLeft, renderRight, renderFront, renderBack) {
+    if (this.blockType === 0 || this.blockType === 1) {
+      return [];
+    }
+
+    const geometries = [];
+
+    const [x, y, z] = this.position;
+
+    const matrix = new THREE.Matrix4();
+
+    matrix.makeTranslation(
+      x,
+      y,
+      z,
+    );
+
     if (!this.refTop && renderTop) {
-      const [x, y, z] = this.position;
-      this.refTop = createElement('a-plane', {
-        height: BLOCK_SIZE,
-        width: BLOCK_SIZE,
-        material: 'shader: flat',
-        color: 'purple' || this.color,
-        rotation: '-90 0 0',
-        position: { x, y: y + 0.5, z },
-      });
-      scene.appendChild(this.refTop);
+      geometries.push(planeTopGeometry.clone().applyMatrix(matrix));
     }
 
     if (!this.refBottom && renderBottom) {
-      const [x, y, z] = this.position;
-      this.refBottom = createElement('a-plane', {
-        height: BLOCK_SIZE,
-        width: BLOCK_SIZE,
-        material: 'shader: flat',
-        color: 'yellow' || this.color,
-        rotation: '90 0 0',
-        position: { x, y: y - 0.5, z },
-      });
-      scene.appendChild(this.refBottom);
+      geometries.push(planeBottomGeometry.clone().applyMatrix(matrix));
     }
 
     if (!this.refRight && renderRight) {
-      const [x, y, z] = this.position;
-      this.refRight = createElement('a-plane', {
-        height: BLOCK_SIZE,
-        width: BLOCK_SIZE,
-        material: 'shader: flat',
-        color: 'orange' || this.color,
-        rotation: '0 -90 0',
-        position: { x: x - 0.5, y, z },
-      });
-      scene.appendChild(this.refRight);
+      geometries.push(planeRightGeometry.clone().applyMatrix(matrix));
     }
 
     if (!this.refLeft && renderLeft) {
-      const [x, y, z] = this.position;
-      this.refLeft = createElement('a-plane', {
-        height: BLOCK_SIZE,
-        width: BLOCK_SIZE,
-        material: 'shader: flat',
-        color: 'blue' || this.color,
-        rotation: '0 90 0',
-        position: { x: x + 0.5, y, z },
-      });
-      scene.appendChild(this.refLeft);
+      geometries.push(planeLeftGeometry.clone().applyMatrix(matrix));
     }
 
     if (!this.refBack && renderBack) {
-      const [x, y, z] = this.position;
-      this.refBack = createElement('a-plane', {
-        height: BLOCK_SIZE,
-        width: BLOCK_SIZE,
-        material: 'shader: flat',
-        color: 'red' || this.color,
-        rotation: '0 0 0',
-        position: { x, y, z: z + 0.5 },
-      });
-      scene.appendChild(this.refBack);
+      geometries.push(planeBackGeometry.clone().applyMatrix(matrix));
     }
 
     if (!this.refFront && renderFront) {
-      const [x, y, z] = this.position;
-      this.refFront = createElement('a-plane', {
-        height: BLOCK_SIZE,
-        width: BLOCK_SIZE,
-        material: 'shader: flat',
-        color: 'green' || this.color,
-        rotation: '0 180 0',
-        position: { x, y, z: z - 0.5 },
-      });
-      scene.appendChild(this.refFront);
+      geometries.push(planeFrontGeometry.clone().applyMatrix(matrix));
     }
 
-
-    /* if (!this.ref) {
-
-      const [x, y, z] = this.position;
-      this.ref = createElement('a-box', {
-        color: this.color,
-        position: { x, y, z },
-      });
-      scene.appendChild(this.ref);
-    } */
+    return geometries;
   }
 }

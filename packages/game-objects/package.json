@@ -18,12 +18,15 @@
     "url": "git+https://github.com/always-alpha-gaming/king-of-clubs.git"
   },
   "scripts": {
-    "test": "echo \"Error: run tests from root\" && exit 1"
+    "test": "jest"
   },
   "bugs": {
     "url": "https://github.com/always-alpha-gaming/king-of-clubs/issues"
   },
   "dependencies": {
     "config": "^0.0.0"
+  },
+  "devDependencies": {
+    "jest": "^24.1.0"
   }
 }

@@ -5,7 +5,7 @@
   ],
   "CHUNK_SIZE": 32,
   "MAP_HEIGHT": 256,
-  "SKYBOX_COLOR": "cornflowerblue",
+  "SKYBOX_COLOUR": "cornflowerblue",
   "BLOCK_SIZE": 1,
   "BLOCK_TYPES": [
     { "id": 0, "name": "Unknown", "health": -1, "colour": "pink", "passable": true },

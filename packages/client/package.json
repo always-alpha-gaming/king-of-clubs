@@ -23,7 +23,7 @@
   "scripts": {
     "build": "parcel build src/index.html",
     "dev": "parcel src/index.html",
-    "serve": "serve --listen 3000",
+    "serve": "serve",
     "test": "echo \"Error: run tests from root\" && exit 1"
   },
   "bugs": {

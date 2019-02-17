@@ -7,6 +7,10 @@ export default class Player extends PlayerData {
     this.ref = entity;
   }
 
+  setColor(color) {
+    this.ref.setAttribute('color', color);
+  }
+
   draw(scene) {
     if (!this.ref) {
       this.ref = createElement('a-sphere', {

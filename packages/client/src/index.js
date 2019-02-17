@@ -34,6 +34,7 @@ async function go() {
     team: TEAMS[0],
   });
   player.setRef(playerElement);
+  player.setColor(player.team.color);
 
   connection.on(EVENTS.CHUNK_CREATE, chunk => world.addChunk(chunk));
 

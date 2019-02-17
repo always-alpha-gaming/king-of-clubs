@@ -32,7 +32,11 @@ export default class Player extends PlayerData {
     this.ref.setAttribute('velocity', new Vector3());
   }
 
-  update() {}
+  update() {
+    if (this.ref) {
+      this.ref.setAttribute('position', this.position);
+    }
+  }
 
   draw(scene) {
     if (!this.ref) {

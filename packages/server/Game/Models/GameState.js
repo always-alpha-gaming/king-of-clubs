@@ -182,7 +182,7 @@ class GameState {
     playerSocketPair.playerData.rotation = this.getRandomPlayerRotation();
 
     // And resend to client
-    const fellOffWorldData {
+    const fellOffWorldData = {
       position: playerSocketPair.playerData.position,
       rotation: playerSocketPair.playerData.rotation
     }

@@ -105,6 +105,7 @@ class GameState {
   recievedClientTick(socket, data) {
     const playerSocketPair = this.getSocketPlayerPairFromSocket(socket);
     if (playerSocketPair == null) return;
+    if (playerSocketPair.playerData.health <= 0) return; // Ignore ticks from dead players
     playerSocketPair.playerData = data.me;
     console.log(data);
   }

@@ -18,7 +18,8 @@
     "CHUNK_CREATE": 2,
     "WORLD_TICK": 3,
     "PLAYER_ENTER_RANGE": 4,
-    "PLAYER_LEAVE_RANGE": 5
+    "PLAYER_LEAVE_RANGE": 5,
+    "CLIENT_TICK": 6
   },
   "PLAYER": {
     "MAX_HEALTH": 100,

@@ -1,3 +1,4 @@
+const CONFIG = require('config');
 const io = require('socket.io')();
 const clientManager = require('./Game/Managers/ClientManager');
 const gameLoop = require('./Game/gameLoop');
@@ -12,6 +13,11 @@ io.on('connection', (socket) => {
   // Handle The Client Disconnect
   socket.once('disconnect', function() {
     clientManager.onDisconnect(socket);
+  });
+  
+  // Handle the Client Updates
+  socket.on(CONFIG.EVENTS.CLIENT_TICK, function(data) {
+    console.log(data);
   });
 });
 

@@ -17,7 +17,7 @@ class BlockData {
     this.blockType = blockType;
 
     // Color
-    if (typeof color !== 'number') {
+    if (typeof color !== 'string') {
       this.color = CONFIG.BLOCK_TYPES[blockType].colour;
     } else {
       this.color = color;

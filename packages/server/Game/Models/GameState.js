@@ -1,4 +1,5 @@
 const CONFIG = require('config');
+const { PlayerData } = require('game-objects');
 const ServerMapData = require('./ServerMapData');
 const SocketPlayerPair = require('./SocketPlayerPair');
 const idManager = require('../Managers/IDManager');

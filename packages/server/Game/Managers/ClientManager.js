@@ -9,7 +9,7 @@ class ClientManager {
 
     onConnected(socket) {
         // Register the Client with the ClientManager
-        registerClient(socket);
+        this.registerClient(socket);
     }
 
     registerClient(socket) {

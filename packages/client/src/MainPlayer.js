@@ -114,8 +114,8 @@ export default class MainPlayer extends Player {
         return;
       }
 
-      this.left = this.ref.querySelector('[vive-controls*="hand: left"]');
-      this.right = this.ref.querySelector('[vive-controls*="hand: right"]');
+      this.left = this.ref.querySelector('[vive-controls*="hand: left"]').components['grab'];
+      this.right = this.ref.querySelector('[vive-controls*="hand: right"]').components['grab'];
 
 
       this.left.addEventListener('gripdown', () => {

@@ -95,6 +95,13 @@ class GameState {
     playerSocketPair.playerData = data.me;
     console.log(data);
   }
+
+  recievedPlayerShoot(socket, data) {
+    const playerSocketPair = this.getSocketPlayerPairFromSocket(socket);
+    if (playerSocketPair == null) return;
+    // TODO: Shooting
+    console.log(data);
+  }
 }
 
 // Export an instance of the class

@@ -19,7 +19,8 @@
     "WORLD_TICK": 3,
     "PLAYER_ENTER_RANGE": 4,
     "PLAYER_LEAVE_RANGE": 5,
-    "CLIENT_TICK": 6
+    "CLIENT_TICK": 6,
+    "PLAYER_SHOOT": 7
   },
   "PLAYER": {
     "MAX_HEALTH": 100,

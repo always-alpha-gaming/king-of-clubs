@@ -18,8 +18,13 @@ class ClientManager {
   }
 
   onClientTick(socket, data) {
-    printConsoleLog(socket, "has recieved Client Tick");
+    printConsoleLog(socket, "has recieved Client Tick Event");
     gameState.recievedClientTick(socket, data);
+  }
+
+  onPlayerShoot(socket, data) {
+    printConsoleLog(socket, "has recieved a Player Shoot Event");
+    gameState.recievedPlayerShoot(socket, data);
   }
 
   printConsoleLog(socket, message) {

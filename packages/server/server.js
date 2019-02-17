@@ -17,7 +17,10 @@ io.on('connection', (socket) => {
 
   // Handle the Client Updates
   socket.on(CONFIG.EVENTS.CLIENT_TICK, function(data) {
-    console.log('got tick', data);
+    clientManager.onClientTick(socket, data);
+  });
+  socket.on(CONFIG.EVENTS.PLAYER_SHOOT, function(data) {
+    clientManager.onPlayerShoot(socket, data);
   });
 });
 

@@ -15,12 +15,13 @@ class PlayerData {
     position,
     rotation,
     teamIndex,
+    team,
     health = null,
   }) {
     this.id = id;
     this.position = position;
     this.rotation = rotation;
-    this.team = TEAMS[teamIndex];
+    this.team = team || TEAMS[teamIndex];
 
     this.width = PLAYER.BASE_SIZE;
     this.depth = PLAYER.BASE_SIZE;

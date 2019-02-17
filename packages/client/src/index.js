@@ -1,5 +1,5 @@
 import MainLoop from 'mainloop.js';
-import 'aframe';
+import { registerComponent } from 'aframe';
 import 'aframe-extras';
 import './Chunk';
 
@@ -17,6 +17,10 @@ import {
 } from './utilities';
 import World from './World';
 import Player from './Player';
+
+registerComponent('velocity', {
+  schema: { type: 'vec3', default: new THREE.Vector3() },
+});
 
 async function go() {
   const scene = $('a-scene');
@@ -39,7 +43,7 @@ async function go() {
 
   const player = new Player({
     id: 'hullo',
-    position: [0, 20, 0],
+    position: [0, 50, 0],
     rotation: [0, 90, 0],
     teamIndex: 0,
   });
@@ -47,11 +51,12 @@ async function go() {
   player.setColor();
   player.setDimensions();
   player.setCameraHeight();
+  // player.initializeVelocity();
 
   connection.on(EVENTS.CHUNK_CREATE, chunk => world.addChunk(chunk));
 
   MainLoop.setUpdate((delta) => {
-    player.update(delta);
+    player.update(delta, world);
     world.update(delta);
   });
   MainLoop.setDraw(() => {

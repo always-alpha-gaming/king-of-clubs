@@ -32,8 +32,16 @@ class GameState {
         const socketPlayerPair = new SocketPlayerPair(socket, newPlayer);
         this.players.push(socketPlayerPair);
 
-        // Return the generated socketPlayerPair
-        return socketPlayerPair;
+        // Broadcast the Initial GameState to this player
+        const initialState = {map: this.map, me: newPlayer};
+        socket.emit('event', {t: EVENTS.WORLD_CREATE, d: initialState});
+
+        // Broadcast their initial chunks
+        this.map.blockChunks.forEach(row => {
+            row.forEach(chunk => {
+                socket.emit('event', {t: EVENTS.CHUNK_CREATE, d: chunk})
+            })
+        })
     }
 
     deregisterPlayer(socket) {

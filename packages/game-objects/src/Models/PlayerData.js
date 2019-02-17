@@ -1,4 +1,4 @@
-const CONFIG = require('config');
+const { PLAYER } = require('config');
 
 class PlayerData {
   /**

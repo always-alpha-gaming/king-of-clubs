@@ -1,5 +1,10 @@
 import Block from './Block';
 
+let dot = true;
+setTimeout(() => {
+  dot = false;
+}, 10000);
+
 export default class World {
   /**
    * @param {number} borderZ
@@ -61,24 +66,33 @@ export default class World {
   }
 
   update(delta) {
-    this.forEachBlock(block => block.update(delta));
+    // this.forEachBlock(block => block.update(delta));
   }
 
   draw(scene) {
+    if (!dot) {
+      console.log('ret');
+      return;
+    } else {
+      console.log('draw');
+    }
+
     this.forEachBlock((block) => {
       // check in all dimensions if there is null
       const [x, y, z] = block.position;
 
+      const renderTop = !this.getBlock(x, y + 1, z);
+      const renderBottom = (y !== 0 && !this.getBlock(x, y - 1, z));
+      const renderLeft = !this.getBlock(x + 1, y, z);
+      const renderRight = !this.getBlock(x - 1, y, z);
+      const renderFront = !this.getBlock(x, y, z - 1);
+      const renderBack = !this.getBlock(x, y, z + 1);
+
       // ok
       if (
-        !this.getBlock(x - 1, y, z)
-        || !this.getBlock(x + 1, y, z)
-        || (y !== 0 && !this.getBlock(x, y - 1, z))
-        || !this.getBlock(x, y + 1, z)
-        || !this.getBlock(x, y, z - 1)
-        || !this.getBlock(x, y, z + 1)
+        renderTop || renderBottom || renderLeft || renderRight || renderFront || renderBack
       ) {
-        block.draw(scene);
+        block.draw(scene, renderTop, renderBottom, renderLeft, renderRight, renderFront, renderBack);
       }
     });
   }

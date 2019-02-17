@@ -40,7 +40,7 @@ async function go() {
     id: 'hullo',
     position: [0, 20, 0],
     rotation: [0, 90, 0],
-    team: TEAMS[0],
+    teamIndex: 0,
   });
   player.setRef(playerElement);
   player.setColor();

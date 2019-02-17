@@ -4,38 +4,36 @@ import { PlayerData } from 'game-objects';
 import 'aframe-extras';
 import './Chunk';
 
-import {
-  EVENTS,
-  SKYBOX_COLOR,
-} from 'config';
-import {
-  $,
-  connect,
-  waitFor,
-} from './utilities';
+import { EVENTS, SKYBOX_COLOR } from 'config';
+import { $, connect, waitFor } from './utilities';
 import World from './World';
 import Player from './Player';
 
+// custom velocity component
 registerComponent('velocity', {
   schema: { type: 'vec3', default: new THREE.Vector3() },
 });
 
 async function go() {
-  const scene = $('a-scene');
-  const playerElement = $('#player');
-
   const body = $('body');
   body.style.backgroundColor = SKYBOX_COLOR;
 
-  // Start the Connection
+  // important DOM elements
+  const scene = $('a-scene');
+  const playerElement = $('#player');
+
+  // wait for the connection
   const connection = await connect(
     `${window.location}`.includes('localhost') ? 'http://localhost:3000' : '/',
   );
+
+  // world instance, contains all chunks and blocks
   const world = new World();
   connection.on(EVENTS.CHUNK_CREATE, chunk => world.addChunk(chunk));
   const { borderZ, me } = await waitFor(connection.socket, EVENTS.WORLD_CREATE);
   world.borderZ = borderZ;
 
+  // initialize current player
   const player = new Player(me);
   player.setRef(playerElement);
   player.setColor();

@@ -6,13 +6,10 @@ import './Chunk';
 import {
   EVENTS,
   SKYBOX_COLOR,
-  TEAMS,
-  PLAYER,
 } from 'config';
 import {
   $,
   connect,
-  createElement,
   waitFor,
 } from './utilities';
 import World from './World';
@@ -26,11 +23,6 @@ async function go() {
   const scene = $('a-scene');
   const playerElement = $('#player');
 
-
-  // Set the Skybox Color to the CONST
-  // const skybox = $('a-sky');
-  // skybox.color = SKYBOX_COLOR;
-
   const body = $('body');
   body.style.backgroundColor = SKYBOX_COLOR;
 
@@ -38,24 +30,32 @@ async function go() {
   const connection = await connect(
     `${window.location}`.includes('localhost') ? 'http://localhost:3000' : '/',
   );
-  // const { borderZ } = await waitFor(connection.socket, EVENTS.WORLD_CREATE.toString());
-  const world = new World();
+  const { borderZ, me } = await waitFor(connection.socket, EVENTS.WORLD_CREATE.toString());
+  const world = new World(borderZ);
 
-  const player = new Player({
-    id: 'hullo',
-    position: [0, 50, 0],
-    rotation: [0, 90, 0],
-    teamIndex: 0,
-  });
+  const player = new Player(me);
   player.setRef(playerElement);
   player.setColor();
   player.setDimensions();
   player.setCameraHeight();
-  // player.initializeVelocity();
 
   connection.on(EVENTS.CHUNK_CREATE, chunk => world.addChunk(chunk));
 
+  // Game Loop Fixed TimeStep
+  const FIXED_TIME_STEP = 100;
+  let currentTimeStep = 0;
   MainLoop.setUpdate((delta) => {
+    // Determine if a fixed amount of time has passed on our server before we continue our loop.
+    // If we haven't passsed the FIXED_TIME_STEP, then leave the Update Loop
+    // When we have, subtract the FIXED_TIME_STEP from the currentTimeStep
+    currentTimeStep += delta;
+    if (currentTimeStep >= FIXED_TIME_STEP) {
+      currentTimeStep -= FIXED_TIME_STEP;
+      connection.socket.emit(EVENTS.CLIENT_TICK, {
+        me: player,
+      });
+    }
+
     player.update(delta, world);
     world.update(delta);
   });

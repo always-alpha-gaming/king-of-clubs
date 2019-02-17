@@ -1,4 +1,4 @@
-import { createElement } from './utilities';
+import Block from './Block';
 
 export default class World {
   /**
@@ -13,7 +13,11 @@ export default class World {
    * @param {BlockData} block
    */
   addBlock(block) {
-    const [x, y, z] = block.position;
+    if (block === null) {
+      return; // TODO: Generate air block on the fly
+    }
+    const blockObject = new Block(block);
+    const [x, y, z] = blockObject.position;
 
     if (!this.blocks[x]) {
       this.blocks[x] = [];
@@ -22,15 +26,15 @@ export default class World {
       this.blocks[x][y] = [];
     }
 
-    this.block[x][y][z] = block;
+    this.blocks[x][y][z] = blockObject;
   }
 
   addChunk(chunk) {
+    console.log('add chunk called with chunk', chunk);
     chunk.blocks.forEach(
       y => y.forEach(
-        block => this.addBlock(block),
-      ),
-    );
+        z => z.forEach(
+          block => this.addBlock(block))));
   }
 
   getBlock(x, y, z) {
@@ -46,9 +50,8 @@ export default class World {
   forEachBlock(fn) {
     this.blocks.forEach(
       y => y.forEach(
-        block => fn(block),
-      ),
-    );
+        z => z.forEach(
+          block => fn(block))));
   }
 
   update(delta) {

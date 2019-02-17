@@ -4,7 +4,11 @@ import EventEmitter from 'eventemitter3';
 class SocketWrapper extends EventEmitter {
   constructor(socket) {
     super();
-    socket.on('event', ({ t, d }) => this.emit(t, d));
+    this.socket = socket;
+    socket.on('event', ({ t, d }) => {
+      console.log(d, t);
+      this.emit(t.toString(), d)
+    });
   }
 }
 
@@ -12,19 +16,23 @@ function connect(...stuff) {
   return new Promise((resolve, reject) => {
     const socket = io(...stuff);
     socket.on('connect', () => resolve(new SocketWrapper(socket)));
+    socket.on('connect', () => console.log('test'));
     socket.on('connect_error', reject);
     socket.on('connect_timeout', reject);
+    socket.on('event', console.log);
     socket.on('error', reject);
   });
 }
 
 function waitFor(socket, event) {
   return new Promise((resolve, reject) => {
-    socket.on('event', ({ t, d }) => {
+    const waiter = ({ t, d }) => {
       if (t === event) {
         resolve(d);
       }
-    });
+      socket.removeEventListener('event', waiter);
+    };
+    socket.on('event', waiter);
     socket.on('error', reject);
   });
 }

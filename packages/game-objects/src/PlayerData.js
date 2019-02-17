@@ -1,3 +1,5 @@
+const CONFIG = require('config');
+
 class PlayerData {
   /**
    * Player Data Constructor

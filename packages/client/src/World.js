@@ -160,7 +160,7 @@ export default class World {
 
     // Avoids an infinite loop.
     if (dx === 0 && dy === 0 && dz === 0) {
-      throw new RangeError('Raycast in zero direction!')
+      throw new RangeError('Raycast in zero direction!');
     }
 
     // Rescale from units of 1 cube-edge to units of 'direction' so we can

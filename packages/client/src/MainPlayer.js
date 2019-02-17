@@ -32,11 +32,27 @@ export default class MainPlayer extends Player {
     });
   }
 
-  blockDelete(scene) {
+  blockDelete(world) {
+    const camera = this.ref.querySelector('[camera]');
 
+    const { position } = this.ref.object3D;
+
+    const { rotation } = camera.object3D;
+
+    const direction = new THREE.Vector3(0, 0, -1).applyEuler(rotation).normalize();
+
+    const destination = world.raycast(position, direction, 5);
+
+    if (!destination) {
+      return;
+    }
+
+    this.socket.emit(EVENTS.BLOCK_DELETE, {
+      position: destination.block.position,
+    });
   }
 
-  blockPlace(world, scene) {
+  blockPlace(world) {
     const camera = this.ref.querySelector('[camera]');
 
     const { position } = this.ref.object3D;
@@ -53,12 +69,8 @@ export default class MainPlayer extends Player {
     }
 
     this.socket.emit(EVENTS.BLOCK_PLACE, {
-      position: [destination.x, destination.y + 1, destination.z],
+      position: [destination.x, destination.y + 2, destination.z],
     });
-
-    console.log(destination);
-
-    console.log(position, rotation);
   }
 
   update(delta, world, scene) {
@@ -81,7 +93,7 @@ export default class MainPlayer extends Player {
       this.placeBlockButton = keyboardControls.isPressed('KeyE');
 
       if (this.placeBlockButton) {
-        this.blockPlace(world, scene);
+        this.blockPlace(world);
       }
     }
 
@@ -89,7 +101,7 @@ export default class MainPlayer extends Player {
       this.blockDeleteButton = keyboardControls.isPressed('KeyQ');
 
       if (this.blockDeleteButton) {
-        this.blockDelete(scene);
+        this.blockDelete(world);
       }
 
       if (keyboardControls.isPressed('Space')) {

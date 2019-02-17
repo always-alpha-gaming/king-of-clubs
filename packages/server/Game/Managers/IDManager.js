@@ -10,5 +10,5 @@ class IDManager {
 }
 
 // Export an instance of the class
-const instance = new ClientManager();
+const instance = new IDManager();
 module.exports = instance;

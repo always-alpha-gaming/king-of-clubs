@@ -33,7 +33,7 @@ export default class MainPlayer extends Player {
     const { x, y, z } = this.ref.object3D.position;
     // collisions
     const floor = world.getBlock(Math.floor(x), Math.floor(y) - 1, Math.floor(z));
-    if ((floor !== undefined && floor !== null && velocity.y <= 0) || y <= 0) {
+    if (floor !== undefined && floor !== null && velocity.y <= 0) {
       velocity.y = 0;
     }
     if (velocity.x > 0) {
@@ -87,5 +87,7 @@ export default class MainPlayer extends Player {
     const { position, rotation } = this.ref.object3D;
     this.position = [position.x, position.y, position.z];
     this.rotation = [rotation.x, rotation.y, rotation.z];
+    velocity.x = 0;
+    velocity.z = 0;
   }
 }

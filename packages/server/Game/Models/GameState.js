@@ -23,8 +23,8 @@ class GameState {
   }
 
   getRandomPlayerPosition() {
-    const randomX = this.getRandomInt(5, 64);
-    const randomZ = this.getRandomInt(5, 64);
+    const randomX = this.getRandomInt(10, 45);
+    const randomZ = this.getRandomInt(10, 45);
     const position = { x: randomX, y: 50, z: randomZ };
     return position;
   }

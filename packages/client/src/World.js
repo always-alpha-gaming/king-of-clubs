@@ -33,7 +33,7 @@ export default class World {
                 if (block !== null) {
                   return new Block(block);
                 }
-                return new Block({ id: `${x}|${y}|${z}`, position: [x, y, z], blockType: 1 });
+                return null;
               }),
           ),
       );

@@ -8,7 +8,7 @@ planeTopGeometry.translate(0, 0.5, 0);
 
 const planeBottomGeometry = new THREE.PlaneBufferGeometry(BLOCK_SIZE, BLOCK_SIZE);
 planeBottomGeometry.rotateX(-Math.PI / 2);
-planeBottomGeometry.translate(0, - 0.5, 0);
+planeBottomGeometry.translate(0, -0.5, 0);
 
 const planeRightGeometry = new THREE.PlaneBufferGeometry(BLOCK_SIZE, BLOCK_SIZE);
 planeRightGeometry.rotateY(-Math.PI / 2);

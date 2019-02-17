@@ -13,5 +13,12 @@
   "EVENTS": {
     "WORLD_CREATE": 1,
     "CHUNK_CREATE": 2
+  },
+  "PLAYER": {
+    "MAX_HEALTH": 100,
+    "SPRINT_MODIFIER": 1.25,
+    "MOVEMENT_SPEED": 1,
+    "JUMP_SPEED": 1,
+    "JUMP_HEIGHT": 2
   }
 }

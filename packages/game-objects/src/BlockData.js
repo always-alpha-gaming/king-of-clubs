@@ -10,7 +10,7 @@ class BlockData {
    * @param {Number} param0.maxHealth The Maximum Health of this block
    * @param {Object} param0.blockType The Block Type of this Block
    */
-  constructor({ id, position, color = null, health, maxHealth, blockType = 0 }) {
+  constructor({ id, position, color = null, health = null, maxHealth = null, blockType = 0 }) {
     this.id = id;
     this.position = position;
     this.color = color;

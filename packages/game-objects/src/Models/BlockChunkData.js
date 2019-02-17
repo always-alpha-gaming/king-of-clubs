@@ -38,6 +38,26 @@ class BlockChunkData {
     );
   }
 
+  setBlock(absoluteX, absoluteY, absoluteZ, block) {
+    const relativeX = absoluteX - (CONFIG.CHUNK_SIZE * this.position[0]);
+    const relativeY = absoluteY;
+    const relativeZ = absoluteZ - (CONFIG.CHUNK_SIZE * this.position[1]);
+
+    if (!Array.isArray(this.blocks[relativeX])) {
+      this.blocks[relativeX] = [];
+    }
+
+    if (!Array.isArray(this.blocks[relativeX][relativeY])) {
+      this.blocks[relativeX][relativeY] = [];
+    }
+
+    if (!Array.isArray(this.blocks[relativeX][relativeY][relativeZ])) {
+      this.blocks[relativeX][relativeY][relativeZ] = [];
+    }
+
+    this.blocks[relativeX][relativeY][relativeZ] = block;
+  }
+
   getBlockRelative(x, y, z) {
     if (!this.blocks[x]) {
       return undefined;

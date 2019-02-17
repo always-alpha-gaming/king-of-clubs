@@ -32,7 +32,24 @@ export default class MainPlayer extends Player {
     });
   }
 
-  update(delta, world) {
+  blockDelete(scene) {
+
+  }
+
+  blockPlace(scene) {
+    const { position, rotation } = this.ref.object3D;
+
+    const raycaster = new THREE.Raycaster(position, rotation);
+
+    const intersects = raycaster.intersectObjects(scene.children);
+
+    console.log(intersects);
+
+    console.log(position, rotation);
+
+  }
+
+  update(delta, world, scene) {
     if (!this.ref) {
       return;
     }
@@ -46,6 +63,22 @@ export default class MainPlayer extends Player {
     let keyboardControls;
     if (!keyboardControls) {
       keyboardControls = this.ref.components['keyboard-controls'];
+    }
+
+    if (keyboardControls.isPressed('KeyE') !== this.placeBlockButton) {
+      this.placeBlockButton = keyboardControls.isPressed('KeyE');
+
+      if (this.placeBlockButton) {
+        this.blockPlace(scene);
+      }
+    }
+
+    if (keyboardControls.isPressed('KeyQ') !== this.blockDeleteButton) {
+      this.blockDeleteButton = keyboardControls.isPressed('KeyQ');
+
+      if (this.blockDeleteButton) {
+        this.blockDelete(scene);
+      }
     }
 
     if (keyboardControls.isPressed('Space')) {

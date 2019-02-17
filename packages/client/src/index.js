@@ -1,6 +1,7 @@
 import MainLoop from 'mainloop.js';
 import { registerComponent } from 'aframe';
 import { PlayerData } from 'game-objects';
+import '../lib/LegacyJSONLoader';
 import 'aframe-extras';
 import './Chunk';
 
@@ -98,7 +99,7 @@ async function go() {
       });
     }
 
-    player.update(delta, world);
+    player.update(delta, world, scene);
     Object.values(players).forEach(p => p.update(delta, world));
     world.update(delta);
   });

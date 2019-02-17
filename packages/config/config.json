@@ -20,7 +20,9 @@
     "PLAYER_ENTER_RANGE": 4,
     "PLAYER_LEAVE_RANGE": 5,
     "CLIENT_TICK": 6,
-    "PLAYER_SHOOT": 7
+    "PLAYER_SHOOT": 7,
+    "BLOCK_PLACE": 8,
+    "BLOCK_DELETE": 9
   },
   "PLAYER": {
     "MAX_HEALTH": 3,

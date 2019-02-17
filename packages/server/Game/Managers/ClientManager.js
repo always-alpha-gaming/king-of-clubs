@@ -8,28 +8,39 @@ class ClientManager {
   }
 
   onConnected(socket) {
-    const address = socket.handshake.address; // address.address + ':' + address.port
-    // var clientIPAddress = socket.request.connection.remoteAddress;
-    console.log(`Client (${address}) has connected`);
-
-    // Register the Client with the ClientManager
+    printConsoleLog(socket, "has connected");
     this.registerClient(socket);
   }
 
   onDisconnect(socket) {
-    const address = socket.handshake.address; // address.address + ':' + address.port
-    // var clientIPAddress = socket.request.connection.remoteAddress;
-    console.log(`Client (${address}) has disconnected`);
-
-    // Register the Client with the ClientManager
+    printConsoleLog(socket, "has disconnected");
     this.deregisterClient(socket);
   }
 
+  onClientTick(socket, data) {
+    printConsoleLog(socket, "has recieved Client Tick");
+    gameState.recievedClientTick(socket, data);
+  }
+
+  printConsoleLog(socket, message) {
+    const address = socket.handshake.address; // address.address + ':' + address.port
+    // var clientIPAddress = socket.request.connection.remoteAddress;
+    console.log(`Client (${address}) ` +  message);
+  }
+
+  /**
+   * Registers the Socket with the Client Manager and the GameState
+   * @param {*} socket 
+   */
   registerClient(socket) {
     this.clients.push(socket);
     gameState.registerPlayer(socket);
   }
 
+  /**
+   * Deregisters the socket with the Client Manager and the GameState
+   * @param {*} socket 
+   */
   deregisterClient(socket) {
     const i = this.clients.indexOf(socket);
     this.clients.splice(i, 1);

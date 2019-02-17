@@ -16,6 +16,26 @@ class GameState {
     }
   }
 
+  getAllPlayerData() {
+    const data = [];
+    this.players.forEach(pair => {
+      data.push(pair.playerData);
+    })
+    return data;
+  }
+
+  getSocketPlayerPairFromSocket(socket) {
+    // Go through all of the players...
+    for (let i = 0; i < this.players.length; i++) {
+      // Find the connected Socket...
+      const pair = this.players[i];
+      if (pair.socket === socket) {
+        return pair;
+      }
+    }
+    return null;
+  }
+
   registerPlayer(socket) {
     const startingPosition = { x: 0, y: 0, z: 0 };
     const startingRotation = { x: 0, y: 0, z: 0 };
@@ -47,25 +67,18 @@ class GameState {
   }
 
   deregisterPlayer(clientManager, socket) {
-    // Go through all of the players...
-    let leavingPlayerSocketPair = null;
-    for (let i = 0; i < this.players.length; i++) {
-      // Find the connected Socket...
-      const playerSocketPair = this.players[i];
-      if (playerSocketPair.socket === socket) {
-        leavingPlayerSocketPair = playerSocketPair;
-        // When found, remove it from the Players list
-        const index = this.players.indexOf(socket);
-        this.players.splice(index, 1);
-
-        // Break out of the loop
-        break;
-      }
-    }
+    const leavingPlayerSocketPair = this.getSocketPlayerPairFromSocket(socket);
 
     // Loop through the remaining players and Notify that a player has left
     if (leavingPlayerSocketPair == null) return;
     clientManager.broadcastMessage(CONFIG.EVENTS.PLAYER_LEAVE_RANGE, leavingPlayerSocketPair.playerData);
+  }
+
+  recievedClientTick(socket, data) {
+    const playerSocketPair = this.getSocketPlayerPairFromSocket(socket);
+    if (playerSocketPair == null) return;
+    playerSocketPair.playerData = data.me;
+    console.log(data);
   }
 }
 

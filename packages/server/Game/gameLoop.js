@@ -28,6 +28,8 @@ function update(deltaTime) {
   currentTimeStep -= FIXED_TIME_STEP;
 
   // Now that we are updating on a fixed interval, begin the Server-Side GameLoop
+  // Tick out the Global Game State
+  var allPlayerData = gameState.getAllPlayerData();
 };
 
 module.exports = beginMainLoop;

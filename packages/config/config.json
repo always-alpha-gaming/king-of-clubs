@@ -8,7 +8,8 @@
   "BLOCK_SIZE": 1,
   "BLOCK_TYPES": [
     { "id": 0, "name": "Air", "health": -1, "colour": "transparent", "passable": true },
-    { "id": 1, "name": "Stone", "health": 3, "colour": "grey", "passable": false }
+    { "id": 1, "name": "Stone", "health": 3, "colour": "grey", "passable": false },
+    { "id": 2, "name": "Unknown", "health": -1, "colour": "pink", "passable": true }
   ],
   "EVENTS": {
     "WORLD_CREATE": 1,

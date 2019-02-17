@@ -22,7 +22,8 @@
     "CLIENT_TICK": 6,
     "PLAYER_SHOOT": 7,
     "BLOCK_PLACE": 8,
-    "BLOCK_DELETE": 9
+    "BLOCK_DELETE": 9,
+    "FELL_OFF_WORLD": 10
   },
   "PLAYER": {
     "MAX_HEALTH": 3,

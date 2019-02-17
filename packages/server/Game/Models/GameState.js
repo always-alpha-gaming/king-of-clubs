@@ -16,6 +16,16 @@ class GameState {
     }
   }
 
+  getRandomPlayerPosition() {
+    const position = { x: 20, y: 50, z: 20 };
+    return position;
+  }
+
+  getRandomPlayerRotation() {
+    const rotation = { x: 0, y: 0, z: 0 };
+    return rotation;
+  }
+
   getAllPlayerData() {
     const data = [];
     this.players.forEach((pair) => {
@@ -64,8 +74,8 @@ class GameState {
   }
 
   registerPlayer(clientManager, socket) {
-    const startingPosition = { x: 20, y: 50, z: 20 };
-    const startingRotation = { x: 0, y: 0, z: 0 };
+    const startingPosition = this.getRandomPlayerPosition();
+    const startingRotation = this.getRandomPlayerRotation();
     const teamIndex = 0;
 
     // Create the Player Data
@@ -129,8 +139,8 @@ class GameState {
     // If the target player is dead...
     if (targetSocketPair.playerData.health <= 0) {
       // Reset their spawn and rotation
-      targetSocketPair.playerData.position = { x: 20, y: 50, z: 20 };
-      targetSocketPair.playerData.rotation = { x: 0, y: 0, z: 0 };
+      targetSocketPair.playerData.position = this.getRandomPlayerPosition();
+      targetSocketPair.playerData.rotation = this.getRandomPlayerRotation();
       targetSocketPair.playerData.health = -999;
       clientManager.broadcastMessage(CONFIG.EVENTS.PLAYER_LEAVE_RANGE, targetSocketPair.playerData);
     }
@@ -150,6 +160,15 @@ class GameState {
     const [x, y, z] = data.position;
     const chunk = this.map.getChunkContainingAbsolute(x, z);
     chunk.setBlock(x, y, z, null);
+  }
+
+  receivedPlayerFellOffWorld(socket, data) {
+    const playerSocketPair = this.getSocketPlayerPairFromSocket(socket);
+    if (playerSocketPair == null) return;
+
+    // Just respawn them
+    playerSocketPair.playerData.position = this.getRandomPlayerPosition();
+    playerSocketPair.playerData.rotation = this.getRandomPlayerRotation();
   }
 }
 

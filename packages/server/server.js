@@ -28,6 +28,9 @@ io.on('connection', (socket) => {
   socket.on(CONFIG.EVENTS.BLOCK_DELETE, (data) => {
     clientManager.onBlockDelete(socket, data);
   });
+  socket.on(CONFIG.EVENTS.FELL_OFF_WORLD, (data) => {
+    clientManager.onFellOffWorld(socket, data);
+  });
 });
 
 // Start the Server and Listen on Port 3000

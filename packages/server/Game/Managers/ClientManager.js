@@ -37,6 +37,11 @@ class ClientManager {
     gameState.receivedBlockDelete(socket, data);
   }
 
+  onFellOffWorld(socket, data) {
+    this.printConsoleLog(socket, 'has fallen off the world');
+    gameState.receivedPlayerFellOffWorld(socket, data);
+  }
+
   printConsoleLog(socket, message) {
     const address = socket.handshake.address; // address.address + ':' + address.port
     // var clientIPAddress = socket.request.connection.remoteAddress;

@@ -23,13 +23,28 @@ class GameState {
     })
     return data;
   }
+  getAllPlayerDataExcept(playerData) {
+    const data = [];
+    this.players.forEach(pair => {
+      if (pair.playerData === playerData) continue;
+      data.push(pair.playerData);
+    })
+    return data;
+  }
 
   getSocketPlayerPairFromSocket(socket) {
-    // Go through all of the players...
     for (let i = 0; i < this.players.length; i++) {
-      // Find the connected Socket...
       const pair = this.players[i];
       if (pair.socket === socket) {
+        return pair;
+      }
+    }
+    return null;
+  }
+  getSocketPlayerPairFromPlayerData(playerData) {
+    for (let i = 0; i < this.players.length; i++) {
+      const pair = this.players[i];
+      if (pair.playerData === playerData) {
         return pair;
       }
     }

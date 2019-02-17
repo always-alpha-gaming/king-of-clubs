@@ -54,8 +54,18 @@ class ClientManager {
    */
   broadcastMessage(eventType, data) {
     this.clients.forEach((client) => {
-      client.emit('event', { t: eventType, d: data });
+      this.broadcastMessageToSocket(client, eventType, data);
     });
+  }
+
+   /**
+   * Broadcasts a message to the specified client
+   * @param {*} socket The socket we will send the data to
+   * @param {Number} type An Event Type from the Consts
+   * @param {*} data Data to be broadcasted
+   */
+  broadcastMessageToSocket(socket, eventType, data) {
+    socket.emit('event', { t: eventType, d: data });
   }
 }
 

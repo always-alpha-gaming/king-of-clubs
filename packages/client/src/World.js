@@ -129,34 +129,34 @@ export default class World {
     // if we took a step sufficient to cross a cube boundary along that axis
     // (i.e. change the integer part of the coordinate) in the variables
     // tMaxX, tMaxY, and tMaxZ.
-    console.log('Raycast called with ', origin, direction, radius);
+    // console.log('Raycast called with ', origin, direction, radius);
 
     // Cube containing origin point.
-    var x = Math.floor(origin.x);
-    var y = Math.floor(origin.y);
-    var z = Math.floor(origin.z);
+    let x = Math.floor(origin.x);
+    let y = Math.floor(origin.y);
+    let z = Math.floor(origin.z);
 
-    console.log('initial coords', x, y, z);
+    // console.log('initial coords', x, y, z);
 
     // Break out direction vector.
-    var dx = direction.x;
-    var dy = direction.y;
-    var dz = direction.z;
+    const dx = direction.x;
+    const dy = direction.y;
+    const dz = direction.z;
     // Direction to increment x,y,z when stepping.
-    var stepX = signum(dx);
-    var stepY = signum(dy);
-    var stepZ = signum(dz);
+    const stepX = signum(dx);
+    const stepY = signum(dy);
+    const stepZ = signum(dz);
+    // The change in t when taking a step (always positive).
+    const tDeltaX = stepX / dx;
+    const tDeltaY = stepY / dy;
+    const tDeltaZ = stepZ / dz;
     // See description above. The initial values depend on the fractional
     // part of the origin.
-    var tMaxX = intbound(origin.x, dx);
-    var tMaxY = intbound(origin.y, dy);
-    var tMaxZ = intbound(origin.z, dz);
-    // The change in t when taking a step (always positive).
-    var tDeltaX = stepX / dx;
-    var tDeltaY = stepY / dy;
-    var tDeltaZ = stepZ / dz;
+    let tMaxX = intbound(origin.x, dx);
+    let tMaxY = intbound(origin.y, dy);
+    let tMaxZ = intbound(origin.z, dz);
     // Buffer for reporting faces to the callback.
-    var face = [];
+    const face = new THREE.Vector3();
 
     // Avoids an infinite loop.
     if (dx === 0 && dy === 0 && dz === 0) {
@@ -168,7 +168,7 @@ export default class World {
     radius /= Math.sqrt(dx * dx + dy * dy + dz * dz);
 
     while (true) {
-      console.log(`Probing ${x}, ${y}, ${z}`);
+      // console.log(`Probing ${x}, ${y}, ${z}`);
       // Invoke the callback, unless we are not *yet* within the bounds of the
       // world.
       if (this.getBlock(x, y, z)) {
@@ -193,34 +193,34 @@ export default class World {
           // Adjust tMaxX to the next X-oriented boundary crossing.
           tMaxX += tDeltaX;
           // Record the normal vector of the cube face we entered.
-          face[0] = -stepX;
-          face[1] = 0;
-          face[2] = 0;
+          face.x = -stepX;
+          face.y = 0;
+          face.z = 0;
         } else {
           if (tMaxZ > radius) return false;
           z += stepZ;
           tMaxZ += tDeltaZ;
-          face[0] = 0;
-          face[1] = 0;
-          face[2] = -stepZ;
+          face.x = 0;
+          face.y = 0;
+          face.z = -stepZ;
         }
       } else {
         if (tMaxY < tMaxZ) {
           if (tMaxY > radius) return false;
           y += stepY;
           tMaxY += tDeltaY;
-          face[0] = 0;
-          face[1] = -stepY;
-          face[2] = 0;
+          face.x = 0;
+          face.y = -stepY;
+          face.z = 0;
         } else {
           // Identical to the second case, repeated for simplicity in
           // the conditionals.
           if (tMaxZ > radius) return false;
           z += stepZ;
           tMaxZ += tDeltaZ;
-          face[0] = 0;
-          face[1] = 0;
-          face[2] = -stepZ;
+          face.x = 0;
+          face.y = 0;
+          face.z = -stepZ;
         }
       }
     }

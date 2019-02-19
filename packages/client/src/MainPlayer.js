@@ -4,8 +4,6 @@ import { $ } from './utilities';
 
 const { Vector3 } = THREE;
 
-const headOffset = new Vector3(0, 2, 0);
-
 export default class MainPlayer extends Player {
   constructor({ socket, ...rest }) {
     super(rest);
@@ -35,17 +33,7 @@ export default class MainPlayer extends Player {
   }
 
   blockDelete(world) {
-    const camera = this.ref.querySelector('[camera]');
-
-    const { position } = this.ref.object3D;
-
-    const head = position.clone().add(headOffset);
-
-    const { quaternion } = camera.object3D;
-
-    const direction = new THREE.Vector3(0, 0, -1).applyQuaternion(quaternion);
-
-    const destination = world.raycast(head, direction, 5);
+    const destination = this.traceVisionToBlock(world);
 
     if (!destination) {
       return;
@@ -56,14 +44,25 @@ export default class MainPlayer extends Player {
     });
   }
 
-  blockPlace(world) {
+  traceVisionToBlock(world) {
     const camera = this.ref.querySelector('[camera]');
 
     const { position } = this.ref.object3D;
 
-    const head = position.clone().add(headOffset);
+    const { position: cameraPosition } = camera.object3D;
 
-    const { quaternion } = camera.object3D;
+    const { rotation } = camera.object3D;
+
+    const direction = new THREE.Vector3(0, 0, -1).applyEuler(rotation)
+      .normalize();
+
+    const absolutePosition = position.clone().add(cameraPosition);
+
+    return world.raycast(absolutePosition, direction, 5);
+  }
+
+  blockPlace(world) {
+    const destination = this.traceVisionToBlock(world);
 
     const direction = new THREE.Vector3(0, 0, -1).applyQuaternion(quaternion);
 
@@ -73,8 +72,10 @@ export default class MainPlayer extends Player {
       return;
     }
 
+    const { face } = destination;
+
     this.socket.emit(EVENTS.BLOCK_PLACE, {
-      position: [destination.x, destination.y + 1, destination.z],
+      position: [destination.x + face.x, destination.y + face.y, destination.z + face.z],
     });
   }
 

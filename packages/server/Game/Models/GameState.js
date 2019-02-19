@@ -133,8 +133,8 @@ class GameState {
     const playerSocketPair = this.getSocketPlayerPairFromSocket(socket);
     if (playerSocketPair == null) return;
     if (playerSocketPair.playerData.health <= 0) return; // Ignore ticks from dead players
-    playerSocketPair.playerData = data.me;
-    // console.log(data);
+    playerSocketPair.playerData.position = data.me.position;
+    playerSocketPair.playerData.rotation = data.me.rotation;
   }
 
   receivedPlayerShoot(clientManager, socket, data) {

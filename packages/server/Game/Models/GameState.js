@@ -138,7 +138,7 @@ class GameState {
   }
 
   receivedPlayerShoot(clientManager, socket, data) {
-    console.log(`Data: ${data}`);
+    console.log(`Data: ${JSON.stringify(data)}`);
 
     // Get the Socket of the Player
     const playerSocketPair = this.getSocketPlayerPairFromSocket(socket);
@@ -153,6 +153,8 @@ class GameState {
 
     // Decrease the Health...
     targetSocketPair.playerData.health -= 1;
+
+    console.log('new health ', targetSocketPair.playerData.health);
 
     // If the target player is dead...
     if (targetSocketPair.playerData.health <= 0) {

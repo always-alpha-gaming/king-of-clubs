@@ -64,10 +64,6 @@ export default class MainPlayer extends Player {
   blockPlace(world) {
     const destination = this.traceVisionToBlock(world);
 
-    const direction = new THREE.Vector3(0, 0, -1).applyQuaternion(quaternion);
-
-    const destination = world.raycast(head, direction, 5);
-
     if (!destination) {
       return;
     }
@@ -129,14 +125,24 @@ export default class MainPlayer extends Player {
     let collisionArray = [];
     const { x, y, z } = this.ref.object3D.position;
     // collisions
-    const floor = world.getBlock(Math.floor(x), Math.floor(y) - 1, Math.floor(z));
-    if (floor !== undefined && floor !== null && velocity.y <= 0) {
+    const floorOne = world.getBlock(Math.floor(x - 0.4), Math.floor(y - 1.3), Math.floor(z - 0.4));
+    const floorTwo = world.getBlock(Math.ceil(x - 0.4), Math.floor(y - 1.3), Math.floor(z - 0.4));
+    const floorThree = world.getBlock(Math.floor(x - 0.4), Math.floor(y - 1.3), Math.ceil(z - 0.4));
+    const floorFour = world.getBlock(Math.ceil(x - 0.4), Math.floor(y - 1.3), Math.ceil(z - 0.4));
+    const onFloor = !(floorOne == null
+      && floorTwo == null
+      && floorThree == null
+      && floorFour == null);
+
+    if (onFloor && velocity.y <= 0) {
       velocity.y = 0;
     }
+
+
     if (velocity.x > 0) {
-      collisionArray.push(world.getBlock(Math.floor(x) + 1, Math.floor(y), Math.round(z)));
-      collisionArray.push(world.getBlock(Math.floor(x) + 1, Math.floor(y) + 1, Math.round(z)));
-      collisionArray.push(world.getBlock(Math.floor(x) + 1, Math.floor(y) + 2, Math.round(z)));
+      collisionArray.push(world.getBlock(Math.floor(x - 0.4) + 1, Math.floor(y - 0.3), Math.round(z - 0.5)));
+      collisionArray.push(world.getBlock(Math.floor(x - 0.4) + 1, Math.floor(y - 0.3) + 1, Math.round(z - 0.5)));
+      collisionArray.push(world.getBlock(Math.floor(x - 0.4) + 1, Math.floor(y - 0.3) + 2, Math.round(z - 0.5)));
       const filteredCollisions = collisionArray.filter(element => element !== null);
       if (filteredCollisions.length !== 0) {
         velocity.x = 0;
@@ -145,9 +151,9 @@ export default class MainPlayer extends Player {
     }
 
     if (velocity.x < 0) {
-      collisionArray.push(world.getBlock(Math.ceil(x) - 1, Math.floor(y), Math.round(z)));
-      collisionArray.push(world.getBlock(Math.ceil(x) - 1, Math.floor(y) + 1, Math.round(z)));
-      collisionArray.push(world.getBlock(Math.ceil(x) - 1, Math.floor(y) + 2, Math.round(z)));
+      collisionArray.push(world.getBlock(Math.ceil(x - 0.4) - 1, Math.floor(y - 0.3), Math.round(z - 0.5)));
+      collisionArray.push(world.getBlock(Math.ceil(x - 0.4) - 1, Math.floor(y - 0.3) + 1, Math.round(z - 0.5)));
+      collisionArray.push(world.getBlock(Math.ceil(x - 0.4) - 1, Math.floor(y - 0.3) + 2, Math.round(z - 0.5)));
       const filteredCollisions = collisionArray.filter(element => element !== null);
       if (filteredCollisions.length !== 0) {
         velocity.x = 0;
@@ -156,9 +162,9 @@ export default class MainPlayer extends Player {
     }
 
     if (velocity.z > 0) {
-      collisionArray.push(world.getBlock(Math.round(x), Math.floor(y), Math.floor(z) + 1));
-      collisionArray.push(world.getBlock(Math.round(x), Math.floor(y) + 1, Math.floor(z) + 1));
-      collisionArray.push(world.getBlock(Math.round(x), Math.floor(y) + 2, Math.floor(z) + 1));
+      collisionArray.push(world.getBlock(Math.round(x - 0.4), Math.floor(y - 0.3), Math.floor(z - 0.5) + 1));
+      collisionArray.push(world.getBlock(Math.round(x - 0.4), Math.floor(y - 0.3) + 1, Math.floor(z - 0.5) + 1));
+      collisionArray.push(world.getBlock(Math.round(x - 0.4), Math.floor(y - 0.3) + 2, Math.floor(z - 0.5) + 1));
       const filteredCollisions = collisionArray.filter(element => element !== null);
       if (filteredCollisions.length !== 0) {
         velocity.z = 0;
@@ -167,9 +173,9 @@ export default class MainPlayer extends Player {
     }
 
     if (velocity.z < 0) {
-      collisionArray.push(world.getBlock(Math.round(x), Math.floor(y), Math.ceil(z) - 1));
-      collisionArray.push(world.getBlock(Math.round(x), Math.floor(y) + 1, Math.ceil(z) - 1));
-      collisionArray.push(world.getBlock(Math.round(x), Math.floor(y) + 2, Math.ceil(z) - 1));
+      collisionArray.push(world.getBlock(Math.round(x - 0.4), Math.floor(y - 0.3), Math.ceil(z - 0.5) - 1));
+      collisionArray.push(world.getBlock(Math.round(x - 0.4), Math.floor(y - 0.3) + 1, Math.ceil(z - 0.5) - 1));
+      collisionArray.push(world.getBlock(Math.round(x - 0.4), Math.floor(y - 0.3) + 2, Math.ceil(z - 0.5) - 1));
       const filteredCollisions = collisionArray.filter(element => element !== null);
       if (filteredCollisions.length !== 0) {
         velocity.z = 0;

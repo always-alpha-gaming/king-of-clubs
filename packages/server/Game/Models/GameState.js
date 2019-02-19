@@ -101,7 +101,7 @@ class GameState {
     this.players.push(socketPlayerPair);
 
     // Broadcast the Initial GameState to this player
-    const initialState = { map: this.map, me: newPlayer };
+    const initialState = { me: newPlayer };
     clientManager.broadcastMessageToSocket(socket, CONFIG.EVENTS.WORLD_CREATE, initialState);
 
     // Broadcast their initial chunks

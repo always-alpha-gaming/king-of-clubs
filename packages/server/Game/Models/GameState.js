@@ -119,6 +119,13 @@ class GameState {
 
     // Loop through the remaining players and Notify that a player has left
     if (leavingPlayerSocketPair == null) return;
+
+    const index = this.players.indexOf(leavingPlayerSocketPair);
+
+    if (index) {
+      this.players.splice(index, 1);
+    }
+
     clientManager.broadcastMessage(CONFIG.EVENTS.PLAYER_LEAVE_RANGE, leavingPlayerSocketPair.playerData);
   }
 
@@ -131,21 +138,21 @@ class GameState {
   }
 
   receivedPlayerShoot(clientManager, socket, data) {
-    console.log('Data: ' + data);
+    console.log(`Data: ${data}`);
 
     // Get the Socket of the Player
     const playerSocketPair = this.getSocketPlayerPairFromSocket(socket);
     if (playerSocketPair == null) return;
-    //console.log('Shooter ID: ' + playerSocketPair.playerData.id);
+    // console.log('Shooter ID: ' + playerSocketPair.playerData.id);
 
     // Get the Target ID
-    var targetID = data.targetID;
+    const targetID = data.targetID;
     const targetSocketPair = this.getSocketPlayerPairFromPlayerID(targetID);
     if (targetSocketPair == null) return;
-    //console.log('Target ID: ' + targetSocketPair.playerData.id);
+    // console.log('Target ID: ' + targetSocketPair.playerData.id);
 
     // Decrease the Health...
-    targetSocketPair.playerData.health--;
+    targetSocketPair.playerData.health -= 1;
 
     // If the target player is dead...
     if (targetSocketPair.playerData.health <= 0) {

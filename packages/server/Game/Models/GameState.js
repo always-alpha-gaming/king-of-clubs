@@ -122,7 +122,7 @@ class GameState {
 
     const index = this.players.indexOf(leavingPlayerSocketPair);
 
-    if (index) {
+    if (index !== -1) {
       this.players.splice(index, 1);
     }
 

@@ -26,14 +26,15 @@ planeFrontGeometry.rotateY(Math.PI);
 planeFrontGeometry.translate(0.5, 0.5, 0);
 
 export default class Block extends BlockData {
-  render(renderTop, renderBottom, renderLeft, renderRight, renderFront, renderBack) {
-    if (this.blockType === 0 || this.blockType === 1) {
+  static render(block, position, renderTop, renderBottom, renderLeft, renderRight, renderFront, renderBack) {
+    const blockType = Block.getBlockType(block);
+    if (blockType.transparent) {
       return [];
     }
 
     const geometries = [];
 
-    const [x, y, z] = this.position;
+    const [x, y, z] = position;
 
     const matrix = new THREE.Matrix4();
 
@@ -43,27 +44,27 @@ export default class Block extends BlockData {
       z,
     );
 
-    if (!this.refTop && renderTop) {
+    if (renderTop) {
       geometries.push(planeTopGeometry.clone().applyMatrix(matrix));
     }
 
-    if (!this.refBottom && renderBottom) {
+    if (renderBottom) {
       geometries.push(planeBottomGeometry.clone().applyMatrix(matrix));
     }
 
-    if (!this.refRight && renderRight) {
+    if (renderRight) {
       geometries.push(planeRightGeometry.clone().applyMatrix(matrix));
     }
 
-    if (!this.refLeft && renderLeft) {
+    if (renderLeft) {
       geometries.push(planeLeftGeometry.clone().applyMatrix(matrix));
     }
 
-    if (!this.refBack && renderBack) {
+    if (renderBack) {
       geometries.push(planeBackGeometry.clone().applyMatrix(matrix));
     }
 
-    if (!this.refFront && renderFront) {
+    if (renderFront) {
       geometries.push(planeFrontGeometry.clone().applyMatrix(matrix));
     }
 

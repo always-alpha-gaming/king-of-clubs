@@ -35,6 +35,10 @@
     "HEIGHT": 2.5,
     "CAMERA_HEIGHT": 2.3
   },
-  "WORLD_GRAVITY": 0.098
+  "WORLD_GRAVITY": 0.098,
+  "NETWORK": {
+    "SERVER_TICK": 50,
+    "CLIENT_TICK": 50
+  }
 }
 

@@ -5,7 +5,7 @@ import '../lib/LegacyJSONLoader';
 import 'aframe-extras';
 import './Chunk';
 
-import { EVENTS, SKYBOX_COLOR } from 'config';
+import { EVENTS, SKYBOX_COLOR, NETWORK } from 'config';
 import { $, connect, waitFor } from './utilities';
 import World from './World';
 import Player from './Player';
@@ -102,7 +102,7 @@ async function go() {
   });
 
   // Game Loop Fixed TimeStep
-  const FIXED_TIME_STEP = 50;
+  const FIXED_TIME_STEP = NETWORK.CLIENT_TICK;
   let currentTimeStep = 0;
   MainLoop.setUpdate((delta) => {
     // Determine if a fixed amount of time has passed on our server before we continue our loop.

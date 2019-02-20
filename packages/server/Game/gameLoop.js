@@ -4,7 +4,7 @@ const clientManager = require('./Managers/ClientManager');
 const gameState = require('./Models/GameState');
 
 // Game Loop Fixed TimeStep
-const FIXED_TIME_STEP = 50;
+const FIXED_TIME_STEP = CONFIG.NETWORK.SERVER_TICK;
 let currentTimeStep = 0;
 
 /**

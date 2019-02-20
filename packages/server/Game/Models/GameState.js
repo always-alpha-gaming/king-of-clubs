@@ -135,6 +135,7 @@ class GameState {
     if (playerSocketPair.playerData.health <= 0) return; // Ignore ticks from dead players
     playerSocketPair.playerData.position = data.me.position;
     playerSocketPair.playerData.rotation = data.me.rotation;
+    playerSocketPair.playerData.movementDirection = data.me.movementDirection;
   }
 
   receivedPlayerShoot(clientManager, socket, data) {

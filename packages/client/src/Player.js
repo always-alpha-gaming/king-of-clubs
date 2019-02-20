@@ -32,15 +32,17 @@ export default class Player extends PlayerData {
     this.ref.setAttribute('velocity', new Vector3());
   }
 
-  update() {
+  update(delta) {
     if (this.ref) {
       // Convert the Position and Directions to Vectors
-      const movementDirection = new Vector3(this.movementDirection.x, this.movementDirection.y, this.movementDirection.z);
       const currentPosition = new Vector3(this.position.x, this.position.y, this.position.z);
+      const movementDirection = new Vector3(this.movementDirection.x, this.movementDirection.y, this.movementDirection.z);
 
       // Move the networked player in the direction they were moving as of their Server Tick
+      const movementDelta = new Vector3(movementDirection.x * 0 * delta, movementDirection.y * 0 * delta, movementDirection.z * 0 * delta);
+
       const newPosition = new Vector3();
-      newPosition.addVectors(currentPosition, movementDirection);
+      newPosition.addVectors(currentPosition, movementDelta);
 
       // Set the Position Attribute to the newly calculated position
       this.ref.setAttribute('position', newPosition);

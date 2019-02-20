@@ -40,7 +40,6 @@ export default class Player extends PlayerData {
 
       // Move the networked player in the direction they were moving as of their Server Tick
       const movementDelta = new Vector3(movementDirection.x * 0 * delta, movementDirection.y * 0 * delta, movementDirection.z * 0 * delta);
-
       const newPosition = new Vector3();
       newPosition.addVectors(currentPosition, movementDelta);
 

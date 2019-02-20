@@ -9,8 +9,8 @@ class GameState {
     this.map = new ServerMapData({});
     this.players = [];
 
-    for (let x = -2; x < 2; x += 1) {
-      for (let z = -2; z < 2; z += 1) {
+    for (let x = -4; x < 4; x += 1) {
+      for (let z = -4; z < 4; z += 1) {
         this.map.getOrGenChunk(x, z);
       }
     }
@@ -105,10 +105,14 @@ class GameState {
     clientManager.broadcastMessageToSocket(socket, CONFIG.EVENTS.WORLD_CREATE, initialState);
 
     // Broadcast their initial chunks
-    this.map.forEachChunk((chunk) => {
-      console.log(`Sending chunk with pos ${chunk.position} to client`);
-      clientManager.broadcastMessageToSocket(socket, CONFIG.EVENTS.CHUNK_CREATE, chunk);
-    });
+    this.map.forEachChunkAsync(chunk => new Promise((resolve) => {
+      setImmediate(() => {
+        console.log(`Sending chunk with pos ${chunk.position} to client`);
+
+        clientManager.broadcastMessageToSocket(socket, CONFIG.EVENTS.CHUNK_CREATE, chunk);
+        resolve();
+      });
+    }));
 
     // Broadcast the player to all active players
     clientManager.broadcastMessage(CONFIG.EVENTS.PLAYER_ENTER_RANGE, newPlayer);
@@ -171,7 +175,7 @@ class GameState {
     if (playerSocketPair == null) return;
     const [x, y, z] = data.position;
     const chunk = this.map.getChunkContainingAbsolute(x, z);
-    chunk.setBlock(x, y, z, new BlockData({ id: `${x}|${y}|${z}`, position: [x, y, z], blockType: 2 }));
+    chunk.setBlock(x, y, z, BlockData.getBlockSerialized(2, 3));
     clientManager.broadcastMessage(CONFIG.EVENTS.CHUNK_CREATE, chunk);
   }
 

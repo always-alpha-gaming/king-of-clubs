@@ -43,21 +43,7 @@ export default class World {
       this.chunksToUnMount.push(this.map.getChunk(x, z));
     }
 
-    const blocks = chunk.blocks
-      .map(
-        (i, x) => i
-          .map(
-            (j, y) => j
-              .map((block, z) => {
-                if (block !== null) {
-                  return new Block(block);
-                }
-                return null;
-              }),
-          ),
-      );
-
-    this.map.addChunk(new Chunk({ ...chunk, blocks }));
+    this.map.addChunk(new Chunk({ ...chunk, BlockData: Block }));
   }
 
   getBlock(x, y, z) {
@@ -70,6 +56,14 @@ export default class World {
       return undefined;
     }
     return this.map.blockChunks[chunkX][chunkZ].getBlock(x, y, z);
+  }
+
+  isBlockPassable(x, y, z) {
+    const block = this.getBlock(x, y, z);
+
+    const type = Block.getBlockType(block);
+
+    return type.passable;
   }
 
   update(delta) {
@@ -93,7 +87,7 @@ export default class World {
         scene.object3D.remove(oldMesh);
       }
       if (!oldMesh || updated) {
-        const newMesh = chunk.render();
+        const newMesh = chunk.render(this);
         if (!newMesh || newMesh.length === 0) return;
         this.chunkToMesh.set(chunk, newMesh);
         scene.object3D.add(newMesh);

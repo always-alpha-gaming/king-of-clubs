@@ -1,52 +1,35 @@
 const CONFIG = require('config');
 
 class BlockData {
+  static getBlockTypeID(block) {
+    // eslint-disable-next-line no-bitwise
+    return (block & 0b11111000) >> 3;
+  }
+
+  static getBlockType(block) {
+    return CONFIG.BLOCK_TYPES[BlockData.getBlockTypeID(block)];
+  }
+
+  static getBlockHealth(block) {
+    // eslint-disable-next-line no-bitwise
+    return block & 0b111;
+  }
+
+  static getBlockSerialized(typeID, health) {
+    // eslint-disable-next-line no-bitwise
+    return (typeID << 3) + health;
+  }
+
   /**
-   * Block Data Constructor
-   * @param {Object} param0 Configuration object containing the following...
-   * @param {Vector3} param0.position The Absolute Position of the Block
-   * @param {Color?} param0.color A Named or Hex Color
-   * @param {Number} param0.health The Health of this block
-   * @param {Number} param0.maxHealth The Maximum Health of this block
-   * @param {Number} param0.blockType The Block Type CONFIG Index of this Block
+   * describes if users or the user's cursor can pass through a block
+   * @param {number} block
+   * @returns {boolean}
    */
-  constructor({ id, position, color = null, health = null, maxHealth = null, blockType = 0 }) {
-    this.id = id;
-    this.position = position;
-    this.color = color;
-    this.blockType = blockType;
+  static allowsPassthrough(block) {
+    const blockType = BlockData.getBlockType(block);
 
-    this.height = CONFIG.BLOCK_SIZE;
-    this.width = CONFIG.BLOCK_SIZE;
-    this.depth = CONFIG.BLOCK_SIZE;
-
-    // Color
-    if (typeof color !== 'string') {
-      this.color = CONFIG.BLOCK_TYPES[blockType].color;
-    } else {
-      this.color = color;
-    }
-
-    // Health
-    if (typeof health !== 'number') {
-      this.health = CONFIG.BLOCK_TYPES[blockType].health;
-    } else {
-      this.health = health;
-    }
-
-    // Max Health
-    if (typeof maxHealth !== 'number') {
-      this.maxHealth = CONFIG.BLOCK_TYPES[blockType].health;
-    } else {
-      this.maxHealth = maxHealth;
-    }
+    return blockType.passable;
   }
-
-  isTransparent() {
-    return this.color === 'transparent';
-  }
-
-  update() {}
 }
 
 module.exports = BlockData;

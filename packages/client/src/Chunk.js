@@ -1,32 +1,35 @@
 import { BlockChunkData } from 'game-objects';
+import Block from './Block';
 
 export default class Chunk extends BlockChunkData {
   hasUpdated() {
     return false;
   }
 
-  render() {
+  render(world) {
     const geometries = [];
 
-    this.forEachBlock((block) => {
+    this.forEachBlock((block, position) => {
       if (!block) return;
       // check in all dimensions if there is null
-      const [x, y, z] = block.position;
+      const [x, y, z] = position;
       // console.log(block.position);
 
-      const renderTop = this.isBlockTransparent(x, y + 1, z);
-      const renderBottom = this.isBlockTransparent(x, y - 1, z);
-      const renderLeft = this.isBlockTransparent(x + 1, y, z);
-      const renderRight = this.isBlockTransparent(x - 1, y, z);
-      const renderFront = this.isBlockTransparent(x, y, z - 1);
-      const renderBack = this.isBlockTransparent(x, y, z + 1);
+      const renderTop = world.isBlockPassable(x, y + 1, z);
+      const renderBottom = world.isBlockPassable(x, y - 1, z);
+      const renderLeft = world.isBlockPassable(x + 1, y, z);
+      const renderRight = world.isBlockPassable(x - 1, y, z);
+      const renderFront = world.isBlockPassable(x, y, z - 1);
+      const renderBack = world.isBlockPassable(x, y, z + 1);
 
       // ok
       if (
         true || renderTop || renderBottom || renderLeft || renderRight || renderFront || renderBack
       ) {
         geometries
-          .push(...block.render(
+          .push(...Block.render(
+            block,
+            [x, y, z],
             renderTop,
             renderBottom,
             renderLeft,

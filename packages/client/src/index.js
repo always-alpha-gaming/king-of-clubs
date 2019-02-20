@@ -31,8 +31,8 @@ async function go() {
       ? `http://${window.location.hostname}:3000`
       : '/',
     {
-      transports: ['websocket']
-    }
+      transports: ['websocket'],
+    },
   );
 
   // world instance, contains all chunks and blocks

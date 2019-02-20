@@ -191,9 +191,16 @@ export default class MainPlayer extends Player {
     velocity.x = 0;
     velocity.z = 0;
 
+    const lastPosition = this.position; // Store the last known position so that we can do a Delta on it
     this.position = position;
     this.rotation = rotation;
 
+    // Calculate the movementDirection
+    const movementDirection = new Vector3();
+    movementDirection.subVectors(this.position, lastPosition).normalize();
+    this.movementDirection = movementDirection;
+
+    // Emit FELL_OFF_WORLD if the player has Fallen off the World
     if (!this.fellOffWorld && this.position.y <= -10) {
       this.fellOffWorld = true;
       this.socket.emit(EVENTS.FELL_OFF_WORLD, {});

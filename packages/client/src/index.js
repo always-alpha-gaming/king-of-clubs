@@ -106,8 +106,8 @@ async function go() {
   let currentTimeStep = 0;
   MainLoop.setUpdate((delta) => {
     // Determine if a fixed amount of time has passed on our server before we continue our loop.
-    // If we haven't passsed the FIXED_TIME_STEP, then leave the Update Loop
-    // When we have, subtract the FIXED_TIME_STEP from the currentTimeStep
+    // If we haven't passsed the FIXED_TIME_STEP, then skip the tick
+    // When we have, subtract the FIXED_TIME_STEP from the currentTimeStep and preform tick
     currentTimeStep += delta;
     if (currentTimeStep >= FIXED_TIME_STEP) {
       currentTimeStep -= FIXED_TIME_STEP;

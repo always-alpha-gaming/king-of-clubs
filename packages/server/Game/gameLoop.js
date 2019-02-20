@@ -7,26 +7,7 @@ const gameState = require('./Models/GameState');
 const FIXED_TIME_STEP = CONFIG.NETWORK.SERVER_TICK;
 let currentTimeStep = 0;
 
-/**
- * Begins the MainLoop
- */
-function beginMainLoop() {
-  MainLoop.setUpdate(update);
-  MainLoop.start();
-}
-
-/**
- * The Update Function of our Game Loop
- * @param {number} deltaTime The Delta Time between Frames
- */
-function update(deltaTime) {
-  // Determine if a fixed amount of time has passed on our server before we continue our loop.
-  // If we haven't passsed the FIXED_TIME_STEP, then leave the Update Loop
-  // When we have, subtract the FIXED_TIME_STEP from the currentTimeStep
-  currentTimeStep += deltaTime;
-  if (currentTimeStep < FIXED_TIME_STEP) return;
-  currentTimeStep -= FIXED_TIME_STEP;
-
+function preformServerNetworkTick() {
   // Now that we are updating on a fixed interval, begin the Server-Side GameLoop
   const allPlayerData = gameState.getAllPlayerData();
 
@@ -45,6 +26,32 @@ function update(deltaTime) {
     players: allPlayerData,
   };
   clientManager.broadcastMessage(CONFIG.EVENTS.WORLD_TICK, worldTickData);
+}
+
+/**
+ * Begins the MainLoop
+ */
+function beginMainLoop() {
+  MainLoop.setUpdate(update);
+  MainLoop.start();
+}
+
+/**
+ * The Update Function of our Game Loop
+ * @param {number} deltaTime The Delta Time between Frames
+ */
+function update(deltaTime) {
+  // Determine if a fixed amount of time has passed on our server before we continue our loop.
+  // If we haven't passsed the FIXED_TIME_STEP, then skip the tick
+  // When we have, subtract the FIXED_TIME_STEP from the currentTimeStep and preform tick
+  currentTimeStep += deltaTime;
+  if (currentTimeStep >= FIXED_TIME_STEP) {
+    currentTimeStep -= FIXED_TIME_STEP;
+    preformServerNetworkTick();
+  }
+
+  // Continue the Server Game Loop
+  // TODO: Add Server Processing
 }
 
 module.exports = beginMainLoop;

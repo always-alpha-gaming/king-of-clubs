@@ -25,7 +25,7 @@
     "url": "https://github.com/always-alpha-gaming/king-of-clubs/issues"
   },
   "dependencies": {
-    "express": "^4.16.4",
+    "express": "^4.18.2",
     "express-http-proxy": "^1.5.1"
   }
 }

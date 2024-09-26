@@ -11,31 +11,26 @@ const { BlockData, BlockChunkData } = require('game-objects');
 module.exports = function genChunk(x, z, seed = 'seed') {
   const simplex = new SimplexNoise(seed);
 
-  const blocks = new Array(CONFIG.CHUNK_SIZE)
-    .fill(0)
-    .map(() => new Array(CONFIG.MAP_HEIGHT)
-      .fill(0)
-      .map(() => new Array(CONFIG.CHUNK_SIZE)
-        .fill(null)));
+  const terrainBlock = 2;
+  const terrainHealth = CONFIG.BLOCK_TYPES[terrainBlock].health;
 
-  for (let relativeX = 0; relativeX < CONFIG.CHUNK_SIZE; relativeX++) {
+  const dataArray = new Uint8Array(CONFIG.CHUNK_SIZE * CONFIG.CHUNK_SIZE * CONFIG.MAP_HEIGHT);
+
+  for (let relativeX = 0; relativeX < CONFIG.CHUNK_SIZE; relativeX += 1) {
     const absoluteX = (x * CONFIG.CHUNK_SIZE) + relativeX;
-    for (let relativeZ = 0; relativeZ < CONFIG.CHUNK_SIZE; relativeZ++) {
+    for (let relativeZ = 0; relativeZ < CONFIG.CHUNK_SIZE; relativeZ += 1) {
       const absoluteZ = (z * CONFIG.CHUNK_SIZE) + relativeZ;
       const height = Math.max(
         0,
-        CONFIG.GROUND_HEIGHT + (5 * simplex.noise2D(0.02 * absoluteX, 0.02 * absoluteZ,
-        )));
+        CONFIG.GROUND_HEIGHT + (5 * simplex.noise2D(0.02 * absoluteX, 0.02 * absoluteZ)),
+      );
 
-      for (let absoluteY = 0; absoluteY < height; absoluteY++) {
-        blocks[relativeX][absoluteY][relativeZ] = new BlockData({
-          id: `${absoluteX}|${absoluteY}|${absoluteZ}`,
-          position: [absoluteX, absoluteY, absoluteZ],
-          blockType: 2, // Stone
-        });
+      for (let absoluteY = 0; absoluteY < height; absoluteY += 1) {
+        dataArray[BlockChunkData.to1D(relativeX, absoluteY, relativeZ)] = BlockData
+          .getBlockSerialized(terrainBlock, terrainHealth);
       }
     }
   }
 
-  return new BlockChunkData({ id: `${x}|${z}`, blocks, position: [x, z] });
+  return new BlockChunkData({ id: `${x}|${z}`, dataArray, position: [x, z] });
 };

@@ -40,7 +40,7 @@ export default class MainPlayer extends Player {
     }
 
     this.socket.emit(EVENTS.BLOCK_DELETE, {
-      position: destination.block.position,
+      position: [destination.x, destination.y, destination.z],
     });
   }
 
@@ -125,14 +125,14 @@ export default class MainPlayer extends Player {
     let collisionArray = [];
     const { x, y, z } = this.ref.object3D.position;
     // collisions
-    const floorOne = world.getBlock(Math.floor(x - 0.4), Math.floor(y - 1.3), Math.floor(z - 0.4));
-    const floorTwo = world.getBlock(Math.ceil(x - 0.4), Math.floor(y - 1.3), Math.floor(z - 0.4));
-    const floorThree = world.getBlock(Math.floor(x - 0.4), Math.floor(y - 1.3), Math.ceil(z - 0.4));
-    const floorFour = world.getBlock(Math.ceil(x - 0.4), Math.floor(y - 1.3), Math.ceil(z - 0.4));
-    const onFloor = !(floorOne == null
-      && floorTwo == null
-      && floorThree == null
-      && floorFour == null);
+    const floorOne = world.isBlockPassable(Math.floor(x - 0.4), Math.floor(y - 1.3), Math.floor(z - 0.4));
+    const floorTwo = world.isBlockPassable(Math.ceil(x - 0.4), Math.floor(y - 1.3), Math.floor(z - 0.4));
+    const floorThree = world.isBlockPassable(Math.floor(x - 0.4), Math.floor(y - 1.3), Math.ceil(z - 0.4));
+    const floorFour = world.isBlockPassable(Math.ceil(x - 0.4), Math.floor(y - 1.3), Math.ceil(z - 0.4));
+    const onFloor = !(floorOne
+      && floorTwo
+      && floorThree
+      && floorFour);
 
     if (onFloor && velocity.y <= 0) {
       velocity.y = 0;
@@ -140,10 +140,10 @@ export default class MainPlayer extends Player {
 
 
     if (velocity.x > 0) {
-      collisionArray.push(world.getBlock(Math.floor(x - 0.4) + 1, Math.floor(y - 0.3), Math.round(z - 0.5)));
-      collisionArray.push(world.getBlock(Math.floor(x - 0.4) + 1, Math.floor(y - 0.3) + 1, Math.round(z - 0.5)));
-      collisionArray.push(world.getBlock(Math.floor(x - 0.4) + 1, Math.floor(y - 0.3) + 2, Math.round(z - 0.5)));
-      const filteredCollisions = collisionArray.filter(element => element !== null);
+      collisionArray.push(world.isBlockPassable(Math.floor(x - 0.4) + 1, Math.floor(y - 0.3), Math.round(z - 0.5)));
+      collisionArray.push(world.isBlockPassable(Math.floor(x - 0.4) + 1, Math.floor(y - 0.3) + 1, Math.round(z - 0.5)));
+      collisionArray.push(world.isBlockPassable(Math.floor(x - 0.4) + 1, Math.floor(y - 0.3) + 2, Math.round(z - 0.5)));
+      const filteredCollisions = collisionArray.filter(element => element !== true);
       if (filteredCollisions.length !== 0) {
         velocity.x = 0;
         collisionArray = [];
@@ -151,10 +151,10 @@ export default class MainPlayer extends Player {
     }
 
     if (velocity.x < 0) {
-      collisionArray.push(world.getBlock(Math.ceil(x - 0.4) - 1, Math.floor(y - 0.3), Math.round(z - 0.5)));
-      collisionArray.push(world.getBlock(Math.ceil(x - 0.4) - 1, Math.floor(y - 0.3) + 1, Math.round(z - 0.5)));
-      collisionArray.push(world.getBlock(Math.ceil(x - 0.4) - 1, Math.floor(y - 0.3) + 2, Math.round(z - 0.5)));
-      const filteredCollisions = collisionArray.filter(element => element !== null);
+      collisionArray.push(world.isBlockPassable(Math.ceil(x - 0.4) - 1, Math.floor(y - 0.3), Math.round(z - 0.5)));
+      collisionArray.push(world.isBlockPassable(Math.ceil(x - 0.4) - 1, Math.floor(y - 0.3) + 1, Math.round(z - 0.5)));
+      collisionArray.push(world.isBlockPassable(Math.ceil(x - 0.4) - 1, Math.floor(y - 0.3) + 2, Math.round(z - 0.5)));
+      const filteredCollisions = collisionArray.filter(element => element !== true);
       if (filteredCollisions.length !== 0) {
         velocity.x = 0;
         collisionArray = [];
@@ -162,10 +162,10 @@ export default class MainPlayer extends Player {
     }
 
     if (velocity.z > 0) {
-      collisionArray.push(world.getBlock(Math.round(x - 0.4), Math.floor(y - 0.3), Math.floor(z - 0.5) + 1));
-      collisionArray.push(world.getBlock(Math.round(x - 0.4), Math.floor(y - 0.3) + 1, Math.floor(z - 0.5) + 1));
-      collisionArray.push(world.getBlock(Math.round(x - 0.4), Math.floor(y - 0.3) + 2, Math.floor(z - 0.5) + 1));
-      const filteredCollisions = collisionArray.filter(element => element !== null);
+      collisionArray.push(world.isBlockPassable(Math.round(x - 0.4), Math.floor(y - 0.3), Math.floor(z - 0.5) + 1));
+      collisionArray.push(world.isBlockPassable(Math.round(x - 0.4), Math.floor(y - 0.3) + 1, Math.floor(z - 0.5) + 1));
+      collisionArray.push(world.isBlockPassable(Math.round(x - 0.4), Math.floor(y - 0.3) + 2, Math.floor(z - 0.5) + 1));
+      const filteredCollisions = collisionArray.filter(element => element !== true);
       if (filteredCollisions.length !== 0) {
         velocity.z = 0;
         collisionArray = [];
@@ -173,10 +173,10 @@ export default class MainPlayer extends Player {
     }
 
     if (velocity.z < 0) {
-      collisionArray.push(world.getBlock(Math.round(x - 0.4), Math.floor(y - 0.3), Math.ceil(z - 0.5) - 1));
-      collisionArray.push(world.getBlock(Math.round(x - 0.4), Math.floor(y - 0.3) + 1, Math.ceil(z - 0.5) - 1));
-      collisionArray.push(world.getBlock(Math.round(x - 0.4), Math.floor(y - 0.3) + 2, Math.ceil(z - 0.5) - 1));
-      const filteredCollisions = collisionArray.filter(element => element !== null);
+      collisionArray.push(world.isBlockPassable(Math.round(x - 0.4), Math.floor(y - 0.3), Math.ceil(z - 0.5) - 1));
+      collisionArray.push(world.isBlockPassable(Math.round(x - 0.4), Math.floor(y - 0.3) + 1, Math.ceil(z - 0.5) - 1));
+      collisionArray.push(world.isBlockPassable(Math.round(x - 0.4), Math.floor(y - 0.3) + 2, Math.ceil(z - 0.5) - 1));
+      const filteredCollisions = collisionArray.filter(element => element !== true);
       if (filteredCollisions.length !== 0) {
         velocity.z = 0;
         collisionArray = [];

@@ -31,6 +31,14 @@ class MapData {
     );
   }
 
+  async forEachChunkAsync(fn) {
+    for (const x of Object.values(this.blockChunks)) {
+      for (const chunk of Object.values(x)) {
+        await fn(chunk);
+      }
+    }
+  }
+
   static getChunkCoordinatesFromAbsolute(absoluteX, absoluteZ) {
     const chunkX = Math.floor(absoluteX / CONFIG.CHUNK_SIZE);
     const chunkZ = Math.floor(absoluteZ / CONFIG.CHUNK_SIZE);
